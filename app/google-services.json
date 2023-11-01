@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "1099255522140",
+    "firebase_url": "https://usccampus-21c03-default-rtdb.firebaseio.com",
+    "project_id": "usccampus-21c03",
+    "storage_bucket": "usccampus-21c03.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1099255522140:android:3fc2d5a8004d04681c1799",
+        "android_client_info": {
+          "package_name": "com.example.myapplication"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAEQMRvzaepHtBdI5ffrdEsYyYJYAYqaIw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
