@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -71,6 +72,12 @@ public class MainActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         FirebaseUser user = mAuth.getCurrentUser();
                         Toast.makeText(MainActivity.this, "Sign Up Successful!", Toast.LENGTH_SHORT).show();
+
+
+                        //go to home page if successful
+                        Intent intent = new Intent(MainActivity.this, HomePageActivity.class);
+                        startActivity(intent);
+                        finish();
                     } else {
                         String errorMessage = task.getException().getMessage();
                         Log.e("SIGNUP_ERROR", "Error: " + errorMessage, task.getException());
@@ -86,6 +93,12 @@ public class MainActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         FirebaseUser user = mAuth.getCurrentUser();
                         Toast.makeText(MainActivity.this, "Login Successful!", Toast.LENGTH_SHORT).show();
+
+
+                        //go to home page if successful
+                        Intent intent = new Intent(MainActivity.this, HomePageActivity.class);
+                        startActivity(intent);
+                        finish();
                     } else {
                         String errorMessage = task.getException().getMessage();
                         Toast.makeText(MainActivity.this, "Login Failed! Error: " + errorMessage, Toast.LENGTH_SHORT).show();

@@ -22,6 +22,23 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".HomePageActivity"
+            android:exported="true" />
+
+        <activity
+            android:name=".ProfileActivity"
+            android:exported="true" />
+
+        <activity
+            android:name=".DepartmentsActivity"
+            android:exported="true" />
+
+        <activity
+            android:name=".MessagesActivity"
+            android:exported="true" />
+
     </application>
 
 </manifest>
