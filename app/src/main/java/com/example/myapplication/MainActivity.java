@@ -87,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
+
     private void login(String uscID, String password) {
         mAuth.signInWithEmailAndPassword(uscID, password)
                 .addOnCompleteListener(this, task -> {
