@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <!-- Spinner for selecting departments -->
+    <Spinner
+        android:id="@+id/spinnerDepartments"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:entries="@array/department_array" />
+
+    <!-- TextView for department label -->
+    <TextView
+        android:id="@+id/departmentLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/spinnerDepartments"
+        android:layout_marginTop="24dp"
+        android:text="Courses"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <!-- ListView for displaying courses -->
+    <ListView
+        android:id="@+id/listViewCourses"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/departmentLabel"
+        android:divider="@android:color/darker_gray"
+        android:dividerHeight="1dp" />
+
+    <!-- Button to select a course -->
+    <Button
+        android:id="@+id/buttonSelectCourse"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/listViewCourses"
+        android:layout_marginTop="24dp"
+        android:text="Select Course" />
+
+</RelativeLayout>

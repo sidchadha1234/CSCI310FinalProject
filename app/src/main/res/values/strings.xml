@@ -1,3 +1,59 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">Find my Courses</string>
+
+    <string-array name="department_array">
+        <item>Computer Science</item>
+        <item>Accounting</item>
+        <item>Communication</item>
+        <item>Business</item>
+        <item>Architecture</item>
+    </string-array>
+
+    <string-array name="computer_science_courses">
+        <item>Introduction to Programming</item>
+        <item>Data Structures</item>
+        <item>Algorithms</item>
+        <item>Computer Networks</item>
+        <item>Operating Systems</item>
+        <item>Software Engineering</item>
+    </string-array>
+
+    <string-array name="accounting_courses">
+        <item>Financial Accounting</item>
+        <item>Managerial Accounting</item>
+        <item>Auditing</item>
+        <item>Tax Accounting</item>
+        <item>Accounting Information Systems</item>
+        <item>Forensic Accounting</item>
+    </string-array>
+    <!-- Communication courses -->
+    <string-array name="communication_courses">
+        <item>Principles of Communication</item>
+        <item>Public Speaking</item>
+        <item>Interpersonal Communication</item>
+        <item>Media Writing</item>
+        <item>Intercultural Communication</item>
+        <item>Mass Communication</item>
+    </string-array>
+
+    <!-- Business courses -->
+    <string-array name="business_courses">
+        <item>Introduction to Business</item>
+        <item>Business Ethics</item>
+        <item>Marketing Principles</item>
+        <item>Organizational Behavior</item>
+        <item>Financial Management</item>
+        <item>Human Resource Management</item>
+    </string-array>
+
+    <!-- Architecture courses -->
+    <string-array name="architecture_courses">
+        <item>Architectural Design</item>
+        <item>Building Materials</item>
+        <item>History of Architecture</item>
+        <item>Environmental Systems</item>
+        <item>Urban Design</item>
+        <item>Architectural Theory</item>
+    </string-array>
+    <!-- Define the rest of the course arrays similarly for other departments -->
 </resources>
