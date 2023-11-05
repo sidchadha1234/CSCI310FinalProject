@@ -65,6 +65,13 @@
             android:layout_height="wrap_content"
             android:text="Register for Course"
             android:layout_marginTop="16dp"/>
+        <TextView
+            android:id="@+id/textViewEnrolled"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Enrolled: 0"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_marginTop="16dp"/>
 
     </LinearLayout>
 </ScrollView>

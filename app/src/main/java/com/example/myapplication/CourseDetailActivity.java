@@ -1,8 +1,19 @@
 package com.example.myapplication;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
+import com.google.firebase.database.ValueEventListener;
 
 public class CourseDetailActivity extends AppCompatActivity {
 
@@ -13,7 +24,9 @@ public class CourseDetailActivity extends AppCompatActivity {
     private TextView textViewSection;
     private TextView textViewDays;
     private TextView textViewInstructor;
-
+    private TextView textViewEnrolled; // TextView to show the number of enrolled students
+    private Button buttonRegisterCourse;
+    private DatabaseReference mDatabase; // Firebase database reference
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +41,11 @@ public class CourseDetailActivity extends AppCompatActivity {
         textViewSection = findViewById(R.id.textViewSection);
         textViewDays = findViewById(R.id.textViewDays);
         textViewInstructor = findViewById(R.id.textViewInstructor);
+        textViewEnrolled = findViewById(R.id.textViewEnrolled); // Initialize the enrolled TextView
+        buttonRegisterCourse = findViewById(R.id.buttonRegisterCourse);
+
+        // Initialize Firebase Database
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         // Get the course name and department name passed from the previous activity
         String courseName = getIntent().getStringExtra("COURSE_NAME");
@@ -59,5 +77,73 @@ public class CourseDetailActivity extends AppCompatActivity {
                 textViewInstructor.setText(details[6]);
             }
         }
+
+        // Load the current number of enrolled students
+        loadEnrolledCount(courseName, departmentName);
+
+        buttonRegisterCourse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                registerForCourse(courseName, departmentName);
+            }
+        });
+    }
+
+    private void loadEnrolledCount(String courseName, String departmentName) {
+        DatabaseReference enrolledRef = mDatabase.child(departmentName).child(courseName).child("enrolled");
+        enrolledRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Integer enrolled = dataSnapshot.getValue(Integer.class);
+                if (enrolled != null) {
+                    textViewEnrolled.setText("Enrolled: " + enrolled);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Toast.makeText(CourseDetailActivity.this, "Failed to load enrolled count.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void registerForCourse(String courseName, String departmentName) {
+        // Reference to the course in the database
+        DatabaseReference courseRef = mDatabase.child(departmentName).child(courseName);
+
+        courseRef.runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(MutableData mutableData) {
+                Course course = mutableData.getValue(Course.class);
+                if (course == null) {
+                    return Transaction.success(mutableData);
+                }
+
+                if (course.getEnrolled() < course.getCapacity()) {
+                    // Increment the number of students enrolled
+                    course.setEnrolled(course.getEnrolled() + 1);
+                    mutableData.setValue(course);
+                } else {
+                    // If the class is full, we abort the transaction
+                    return Transaction.abort();
+                }
+
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean committed, DataSnapshot dataSnapshot) {
+                if (committed) {
+                    Toast.makeText(CourseDetailActivity.this, "Registered successfully!", Toast.LENGTH_SHORT).show();
+                    // Update the enrolled TextView
+                    Course updatedCourse = dataSnapshot.getValue(Course.class);
+                    if (updatedCourse != null) {
+                        textViewEnrolled.setText("Enrolled: " + updatedCourse.getEnrolled());
+                    }
+                } else {
+                    Toast.makeText(CourseDetailActivity.this, "Registration failed, class may be full.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 }
