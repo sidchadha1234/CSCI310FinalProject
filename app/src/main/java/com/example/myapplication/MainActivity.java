@@ -120,7 +120,6 @@ public class MainActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
                         FirebaseUser user = mAuth.getCurrentUser();
-
                         Toast.makeText(MainActivity.this, "Sign Up Successful!", Toast.LENGTH_SHORT).show();
 
 
@@ -156,5 +155,4 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
     }
-
 }
