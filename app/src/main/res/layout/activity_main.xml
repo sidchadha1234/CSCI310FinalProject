@@ -24,11 +24,25 @@
             android:layout_height="wrap_content"
             android:hint="Name" />
 
+        <!-- EditText for Gmail - Removed android:layout_below as it is not needed in LinearLayout -->
+        <EditText
+            android:id="@+id/editTextGmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter your Gmail"
+            android:inputType="textEmailAddress"
+            android:layout_marginTop="16dp" />
+
+        <!-- EditText for USC ID - Removed android:layout_below for the same reason -->
         <EditText
             android:id="@+id/signUpUSCIDEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="USC ID" />
+            android:hint="Enter your USC ID"
+            android:inputType="number"
+            android:maxLength="10"
+            android:layout_marginTop="16dp" />
+
 
         <EditText
             android:id="@+id/signUpPasswordEditText"
@@ -43,13 +57,22 @@
             android:layout_height="wrap_content"
             android:hint="Confirm Password"
             android:inputType="textPassword" />
-
-        <Button
-            android:id="@+id/selectProfilePicButton"
+        <Spinner
+            android:id="@+id/userTypeSpinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Select Profile Picture (Dummy Button)"
-            android:enabled="false" />
+            android:entries="@array/user_types"
+            android:layout_marginTop="16dp" />
+
+        <ImageView
+            android:id="@+id/imageViewProfile"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@android:drawable/sym_def_app_icon"
+            android:layout_marginTop="16dp"
+            android:layout_below="@id/signUpUSCIDEditText"
+            android:layout_centerHorizontal="true" />
+
 
         <Button
             android:id="@+id/signUpConfirmButton"

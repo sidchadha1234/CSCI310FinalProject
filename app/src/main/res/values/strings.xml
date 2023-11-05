@@ -1,6 +1,12 @@
 <resources>
     <string name="app_name">Find my Courses</string>
-
+    <string-array name="user_types">
+        <item>Undergraduate</item>
+        <item>Postgraduate</item>
+        <item>Faculty</item>
+        <item>Staff</item>
+        <!-- Add other user types as needed -->
+    </string-array>
     <string-array name="department_array">
         <item>Computer Science</item>
         <item>Accounting</item>
