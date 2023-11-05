@@ -23,6 +23,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import android.widget.Spinner;
 public class MainActivity extends AppCompatActivity {
     private Spinner userTypeSpinner;
@@ -115,27 +118,44 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void signUp(String uscID, String password, String userType) {
-        mAuth.createUserWithEmailAndPassword(uscID, password)
+    private void signUp(String email, String password, String userType) {
+        mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-                        FirebaseUser user = mAuth.getCurrentUser();
+                        // Get the newly created user
+                        FirebaseUser firebaseUser = mAuth.getCurrentUser();
 
-                        Toast.makeText(MainActivity.this, "Sign Up Successful!", Toast.LENGTH_SHORT).show();
+                        // Create a new User object with an empty courses list
+                        String name = signUpNameEditText.getText().toString();
+                        String uscID = signUpUSCIDEditText.getText().toString();
+                        User user = new User(name, uscID, email, userType);
 
+                        // Get a reference to the database and store the User object
+                        DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("students");
+                        if (firebaseUser != null) {
+                            usersRef.child(firebaseUser.getUid()).setValue(user)
+                                    .addOnCompleteListener(task1 -> {
+                                        if (task1.isSuccessful()) {
+                                            Toast.makeText(MainActivity.this, "Sign Up Successful!", Toast.LENGTH_SHORT).show();
 
-                        //go to home page if successful
-                        Intent intent = new Intent(MainActivity.this, HomePageActivity.class);
-                        startActivity(intent);
-                        finish();
+                                            // Go to home page if successful
+                                            Intent intent = new Intent(MainActivity.this, HomePageActivity.class);
+                                            startActivity(intent);
+                                            finish();
+                                        } else {
+                                            Toast.makeText(MainActivity.this, "Failed to save user data.", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                        }
                     } else {
                         String errorMessage = task.getException().getMessage();
                         Log.e("SIGNUP_ERROR", "Error: " + errorMessage, task.getException());
                         Toast.makeText(MainActivity.this, "Error: " + errorMessage, Toast.LENGTH_LONG).show();
                     }
-
                 });
     }
+
+
 
 
     private void login(String uscID, String password) {

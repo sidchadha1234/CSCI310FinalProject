@@ -1,19 +1,26 @@
 package com.example.myapplication;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CourseDetailActivity extends AppCompatActivity {
 
@@ -93,7 +100,7 @@ public class CourseDetailActivity extends AppCompatActivity {
         DatabaseReference enrolledRef = mDatabase.child(departmentName).child(courseName).child("enrolled");
         enrolledRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Integer enrolled = dataSnapshot.getValue(Integer.class);
                 if (enrolled != null) {
                     textViewEnrolled.setText("Enrolled: " + enrolled);
@@ -101,7 +108,7 @@ public class CourseDetailActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
                 Toast.makeText(CourseDetailActivity.this, "Failed to load enrolled count.", Toast.LENGTH_SHORT).show();
             }
         });
@@ -139,11 +146,40 @@ public class CourseDetailActivity extends AppCompatActivity {
                     Course updatedCourse = dataSnapshot.getValue(Course.class);
                     if (updatedCourse != null) {
                         textViewEnrolled.setText("Enrolled: " + updatedCourse.getEnrolled());
+                        // Update the user's course list
+                        updateUserCourseList(courseName, departmentName);
                     }
                 } else {
                     Toast.makeText(CourseDetailActivity.this, "Registration failed, class may be full.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+    }
+
+    private void updateUserCourseList(String courseName, String departmentName) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            DatabaseReference userRef = mDatabase.child("students").child(user.getUid()).child("courses");
+            userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    List<String> courses = dataSnapshot.getValue(new GenericTypeIndicator<List<String>>() {});
+                    if (courses == null) {
+                        courses = new ArrayList<>();
+                    }
+                    courses.add(departmentName + " - " + courseName);
+                    userRef.setValue(courses)
+                            .addOnSuccessListener(aVoid -> Log.d("UpdateCourseList", "User's course list updated."))
+                            .addOnFailureListener(e -> Log.d("UpdateCourseList", "Failed to update user's course list.", e));
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Log.d("UpdateCourseList", "Failed to read user's course list.", databaseError.toException());
+                }
+            });
+        } else {
+            Toast.makeText(this, "User not logged in.", Toast.LENGTH_SHORT).show();
+        }
     }
 }
