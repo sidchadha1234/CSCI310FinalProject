@@ -30,6 +30,9 @@
         <activity
             android:name=".ProfileActivity"
             android:exported="true" />
+        <activity
+            android:name=".CourseDetailActivity"
+            android:exported="true" />
 
         <activity
             android:name=".DepartmentsActivity"

@@ -56,4 +56,52 @@
         <item>Architectural Theory</item>
     </string-array>
     <!-- Define the rest of the course arrays similarly for other departments -->
+    <string-array name="computer_science_course_details">
+        <item>Introduction to Programming, Introductory course covering basic programming concepts, 4 units, 9:00 AM - 11:00 AM, Comp Sci Building Room 101, CS101, Mon/Wed, Dr. Alice Smith</item>
+        <item>Data Structures, In-depth study of data structures, 4 units, 2:00 PM - 4:00 PM, Comp Sci Building Room 102, CS102, Tue/Thu, Dr. Bob Jones</item>
+        <item>Algorithms, Analysis and design of algorithms, 4 units, 10:00 AM - 12:00 PM, Comp Sci Building Room 103, CS103, Mon/Wed, Dr. Carol White</item>
+        <item>Computer Networks, Fundamentals of computer networking, 3 units, 3:00 PM - 5:00 PM, Comp Sci Building Room 104, CS104, Tue/Thu, Dr. David Brown</item>
+        <item>Operating Systems, Concepts of operating systems, 3 units, 1:00 PM - 3:00 PM, Comp Sci Building Room 105, CS105, Mon/Wed, Dr. Eva Green</item>
+        <item>Software Engineering, Software development life cycle, 3 units, 9:00 AM - 11:00 AM, Comp Sci Building Room 106, CS106, Tue/Thu, Dr. Frank Black</item>
+    </string-array>
+
+    <!-- Accounting Courses -->
+    <string-array name="accounting_course_details">
+        <item>Financial Accounting, Introduction to financial accounting principles, 3 units, 8:00 AM - 10:00 AM, Business Hall Room 201, ACCT101, Mon/Wed, Prof. George King</item>
+        <item>Managerial Accounting, Accounting for business management, 3 units, 11:00 AM - 1:00 PM, Business Hall Room 202, ACCT102, Tue/Thu, Prof. Helen Queen</item>
+        <item>Auditing, Principles and practices of auditing, 3 units, 2:00 PM - 4:00 PM, Business Hall Room 203, ACCT103, Mon/Wed, Prof. Ian Knight</item>
+        <item>Tax Accounting, Tax accounting regulations and practices, 3 units, 10:00 AM - 12:00 PM, Business Hall Room 204, ACCT104, Tue/Thu, Prof. Jane Bishop</item>
+        <item>Accounting Information Systems, Information systems in accounting, 3 units, 1:00 PM - 3:00 PM, Business Hall Room 205, ACCT105, Mon/Wed, Prof. Kyle Lord</item>
+        <item>Forensic Accounting, Investigative accounting and legal aspects, 3 units, 3:00 PM - 5:00 PM, Business Hall Room 206, ACCT106, Tue/Thu, Prof. Laura Earl</item>
+    </string-array>
+
+    <!-- Communication Courses -->
+    <string-array name="communication_course_details">
+        <item>Principles of Communication, Overview of communication principles, 3 units, 9:00 AM - 10:30 AM, Comm Center Room 301, COMM101, Mon/Wed, Dr. Mark Ocean</item>
+        <item>Public Speaking, Techniques and practice in public speaking, 3 units, 11:00 AM - 12:30 PM, Comm Center Room 302, COMM102, Tue/Thu, Dr. Nancy Sky</item>
+        <item>Interpersonal Communication, Dynamics of one-on-one communication, 3 units, 1:00 PM - 2:30 PM, Comm Center Room 303, COMM103, Mon/Wed, Dr. Oscar Heart</item>
+        <item>Media Writing, Writing for various media platforms, 3 units, 3:00 PM - 4:30 PM, Comm Center Room 304, COMM104, Tue/Thu, Dr. Patty Field</item>
+        <item>Intercultural Communication, Communication across cultures, 3 units, 10:00 AM - 11:30 AM, Comm Center Room 305, COMM105, Mon/Wed, Dr. Quentin Ice</item>
+        <item>Mass Communication, Study of mass media impact, 3 units, 12:00 PM - 1:30 PM, Comm Center Room 306, COMM106, Tue/Thu, Dr. Rachel Stone</item>
+    </string-array>
+
+    <!-- Business Courses -->
+    <string-array name="business_course_details">
+        <item>Introduction to Business, Basics of business operations, 3 units, 8:00 AM - 9:30 AM, Business Complex Room 401, BUS101, Mon/Wed, Prof. Steve Water</item>
+        <item>Business Ethics, Ethical considerations in business, 3 units, 10:00 AM - 11:30 AM, Business Complex Room 402, BUS102, Tue/Thu, Prof. Tina Fire</item>
+        <item>Marketing Principles, Core concepts of marketing, 3 units, 12:00 PM - 1:30 PM, Business Complex Room 403, BUS103, Mon/Wed, Prof. Ulysses Iron</item>
+        <item>Organizational Behavior, Behavior within business organizations, 3 units, 2:00 PM - 3:30 PM, Business Complex Room 404, BUS104, Tue/Thu, Prof. Victor Earth</item>
+        <item>Financial Management, Management of financial resources, 3 units, 9:00 AM - 10:30 AM, Business Complex Room 405, BUS105, Mon/Wed, Prof. Wendy Air</item>
+        <item>Human Resource Management, Managing workforce resources, 3 units, 11:00 AM - 12:30 PM, Business Complex Room 406, BUS106, Tue/Thu, Prof. Xavier Metal</item>
+    </string-array>
+
+    <!-- Architecture Courses -->
+    <string-array name="architecture_course_details">
+        <item>Architectural Design, Fundamentals of architectural design, 4 units, 9:00 AM - 12:00 PM, Design Studio A, ARCH101, Mon/Wed, Arch. Yolanda Stone</item>
+        <item>Building Materials, Properties and uses of building materials, 4 units, 1:00 PM - 4:00 PM, Design Studio B, ARCH102, Tue/Thu, Arch. Zachary Brick</item>
+        <item>History of Architecture, Survey of architectural history, 3 units, 10:00 AM - 11:30 AM, History Hall 501, ARCH103, Mon/Wed, Dr. Amy Wood</item>
+        <item>Environmental Systems, Environmental considerations in architecture, 3 units, 12:00 PM - 1:30 PM, Eco Lab 502, ARCH104, Tue/Thu, Dr. Brian Glass</item>
+        <item>Urban Design, Principles of urban design and planning, 3 units, 2:00 PM - 3:30 PM, Urban Planning Room 503, ARCH105, Mon/Wed, Dr. Charlotte Concrete</item>
+        <item>Architectural Theory, Theoretical underpinnings of architectural practice, 3 units, 4:00 PM - 5:30 PM, Theory Room 504, ARCH106, Tue/Thu, Dr. Derek Steel</item>
+    </string-array>
 </resources>

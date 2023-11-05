@@ -31,7 +31,7 @@
         android:id="@+id/buttonDepartments"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Departments"
+        android:text="View Classes"
         android:layout_below="@id/buttonProfile"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="16dp" />
@@ -41,7 +41,7 @@
         android:id="@+id/buttonMessages"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Messages"
+        android:text="View Registered Classes"
         android:layout_below="@id/buttonDepartments"
         android:layout_centerHorizontal="true" />
 
