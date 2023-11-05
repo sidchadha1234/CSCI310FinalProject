@@ -72,20 +72,6 @@
             android:text="Enrolled: 0"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_marginTop="16dp"/>
-        <Button
-            android:id="@+id/buttonViewClassRatings"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="View Class Ratings"
-            android:layout_marginTop="16dp"/>
-
-        <Button
-            android:id="@+id/buttonRateClass"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Rate Class"
-            android:layout_marginTop="8dp"/>
-
 
     </LinearLayout>
 </ScrollView>
