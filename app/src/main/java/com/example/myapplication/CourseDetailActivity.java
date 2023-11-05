@@ -63,6 +63,30 @@ public class CourseDetailActivity extends AppCompatActivity {
         String courseName = getIntent().getStringExtra("COURSE_NAME");
         String departmentName = getIntent().getStringExtra("DEPARTMENT_NAME");
 
+        // Use the department name to find the corresponding course detail string array from strings.xml
+        if (courseName != null && departmentName != null) {
+            String formattedDepartmentName = departmentName.toLowerCase().replaceAll("\\s+", "_");
+            int resId = getResources().getIdentifier(formattedDepartmentName + "_course_details", "array", getPackageName());
+            String[] courseDetailsArray = getResources().getStringArray(resId);
+            // Find the correct course details within the array
+            String[] details = null;
+            for (String detail : courseDetailsArray) {
+                if (detail.startsWith(courseName + ",")) {
+                    details = detail.split(",", -1); // Split the details string into parts
+                    break;
+                }
+            }
+            // If details are found, set the text for each TextView
+            if (details != null && details.length >= 7) {
+                textViewDescription.setText(details[0]);
+                textViewUnits.setText(details[1]);
+                textViewTime.setText(details[2]);
+                textViewLocation.setText(details[3]);
+                textViewSection.setText(details[4]);
+                textViewDays.setText(details[5]);
+                textViewInstructor.setText(details[6]);
+            }
+        }
         // TODO: Retrieve the studentUid from the FirebaseAuth instance or pass it through the intent
         studentUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
