@@ -14,6 +14,7 @@ public class CourseDetailActivity extends AppCompatActivity {
     private TextView textViewDays;
     private TextView textViewInstructor;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

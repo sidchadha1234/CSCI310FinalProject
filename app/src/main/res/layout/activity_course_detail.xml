@@ -59,6 +59,12 @@
             android:layout_height="wrap_content"
             android:text="Instructor"
             android:textAppearance="?android:attr/textAppearanceMedium" />
+        <Button
+            android:id="@+id/buttonRegisterCourse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Register for Course"
+            android:layout_marginTop="16dp"/>
 
     </LinearLayout>
 </ScrollView>
