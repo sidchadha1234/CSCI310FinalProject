@@ -6,8 +6,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -20,7 +22,9 @@ import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CourseDetailActivity extends AppCompatActivity {
 
@@ -34,6 +38,7 @@ public class CourseDetailActivity extends AppCompatActivity {
     private TextView textViewEnrolled; // TextView to show the number of enrolled students
     private Button buttonRegisterCourse;
     private DatabaseReference mDatabase; // Firebase database reference
+    private String studentUid; // UID of the logged-in user
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,32 +63,8 @@ public class CourseDetailActivity extends AppCompatActivity {
         String courseName = getIntent().getStringExtra("COURSE_NAME");
         String departmentName = getIntent().getStringExtra("DEPARTMENT_NAME");
 
-        // Use the department name to find the corresponding course detail string array from strings.xml
-        if (courseName != null && departmentName != null) {
-            String formattedDepartmentName = departmentName.toLowerCase().replaceAll("\\s+", "_");
-            int resId = getResources().getIdentifier(formattedDepartmentName + "_course_details", "array", getPackageName());
-            String[] courseDetailsArray = getResources().getStringArray(resId);
-
-            // Find the correct course details within the array
-            String[] details = null;
-            for (String detail : courseDetailsArray) {
-                if (detail.startsWith(courseName + ",")) {
-                    details = detail.split(",", -1); // Split the details string into parts
-                    break;
-                }
-            }
-
-            // If details are found, set the text for each TextView
-            if (details != null && details.length >= 7) {
-                textViewDescription.setText(details[0]);
-                textViewUnits.setText(details[1]);
-                textViewTime.setText(details[2]);
-                textViewLocation.setText(details[3]);
-                textViewSection.setText(details[4]);
-                textViewDays.setText(details[5]);
-                textViewInstructor.setText(details[6]);
-            }
-        }
+        // TODO: Retrieve the studentUid from the FirebaseAuth instance or pass it through the intent
+        studentUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         // Load the current number of enrolled students
         loadEnrolledCount(courseName, departmentName);
@@ -91,7 +72,7 @@ public class CourseDetailActivity extends AppCompatActivity {
         buttonRegisterCourse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                registerForCourse(courseName, departmentName);
+                registerForCourse(courseName, departmentName, studentUid);
             }
         });
     }
@@ -100,7 +81,7 @@ public class CourseDetailActivity extends AppCompatActivity {
         DatabaseReference enrolledRef = mDatabase.child(departmentName).child(courseName).child("enrolled");
         enrolledRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            public void onDataChange(DataSnapshot dataSnapshot) {
                 Integer enrolled = dataSnapshot.getValue(Integer.class);
                 if (enrolled != null) {
                     textViewEnrolled.setText("Enrolled: " + enrolled);
@@ -108,13 +89,13 @@ public class CourseDetailActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+            public void onCancelled(DatabaseError databaseError) {
                 Toast.makeText(CourseDetailActivity.this, "Failed to load enrolled count.", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void registerForCourse(String courseName, String departmentName) {
+    private void registerForCourse(String courseName, String departmentName, String studentUid) {
         // Reference to the course in the database
         DatabaseReference courseRef = mDatabase.child(departmentName).child(courseName);
 
@@ -126,9 +107,22 @@ public class CourseDetailActivity extends AppCompatActivity {
                     return Transaction.success(mutableData);
                 }
 
+                // Check if the student is already enrolled
+                Map<String, Boolean> students = course.getStudents();
+                if (students == null) {
+                    students = new HashMap<>();
+                }
+                if (students.containsKey(studentUid)) {
+                    // Student is already enrolled
+                    return Transaction.abort();
+                }
+
                 if (course.getEnrolled() < course.getCapacity()) {
                     // Increment the number of students enrolled
                     course.setEnrolled(course.getEnrolled() + 1);
+                    // Add the student's UID to the list of enrolled students
+                    students.put(studentUid, true);
+                    course.setStudents(students);
                     mutableData.setValue(course);
                 } else {
                     // If the class is full, we abort the transaction
@@ -146,11 +140,15 @@ public class CourseDetailActivity extends AppCompatActivity {
                     Course updatedCourse = dataSnapshot.getValue(Course.class);
                     if (updatedCourse != null) {
                         textViewEnrolled.setText("Enrolled: " + updatedCourse.getEnrolled());
-                        // Update the user's course list
-                        updateUserCourseList(courseName, departmentName);
                     }
+                    // Update the user's course list
+                    updateUserCourseList(courseName, departmentName);
                 } else {
-                    Toast.makeText(CourseDetailActivity.this, "Registration failed, class may be full.", Toast.LENGTH_SHORT).show();
+                    if (databaseError != null && databaseError.getCode() == DatabaseError.PERMISSION_DENIED) {
+                        Toast.makeText(CourseDetailActivity.this, "You are already registered for this course.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(CourseDetailActivity.this, "Registration failed, class may be full.", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
@@ -183,3 +181,4 @@ public class CourseDetailActivity extends AppCompatActivity {
         }
     }
 }
+
