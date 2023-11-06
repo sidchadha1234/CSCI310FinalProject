@@ -9,6 +9,7 @@ public class User {
     public ArrayList<String> courses; // List to hold user courses
     public String profileImageUrl; // Field to store the URL of the profile image
 
+
     public User() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }

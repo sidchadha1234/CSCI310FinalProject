@@ -33,7 +33,7 @@ public class UserAdapter extends ArrayAdapter<String> {
         Button buttonMessage = convertView.findViewById(R.id.buttonMessage);
 
         String userId = getItem(position);
-        textViewUser.setText("Student: " + userId);
+        textViewUser.setText(userId);
         buttonMessage.setOnClickListener(v -> {
             Intent intent = new Intent(context, MessagingActivity.class);
             intent.putExtra("OTHER_USER_ID", userId);
