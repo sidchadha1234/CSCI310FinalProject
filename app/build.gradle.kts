@@ -44,7 +44,7 @@ dependencies {
     implementation("com.google.firebase:firebase-storage:20.3.0")
     implementation("com.github.bumptech.glide:glide:4.12.0")
     implementation("com.firebaseui:firebase-ui-database:8.0.0") // Use the appropriate version
-
+    implementation("com.firebaseui:firebase-ui-database:latest_version")
     annotationProcessor("com.github.bumptech.glide:compiler:4.12.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
