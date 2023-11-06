@@ -29,6 +29,7 @@ public class MessagingActivity extends AppCompatActivity {
     // You need to initialize currentUserEmail somewhere,
     // maybe from a user object or from an Intent extra.
 
+    private String otherUserEmail;
     private DatabaseReference messagesReference;
 
     @Override
