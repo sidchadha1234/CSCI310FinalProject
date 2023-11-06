@@ -30,17 +30,16 @@ public class UserAdapter extends ArrayAdapter<String> {
         }
 
         TextView textViewUser = convertView.findViewById(R.id.textViewUser);
-        //if statement to start if the user is a student or a course
         Button buttonMessage = convertView.findViewById(R.id.buttonMessage);
 
         String userId = getItem(position);
         textViewUser.setText(userId);
-        // Check if the userId starts with "Course:"
-        if (userId.startsWith("Course:")) {
-            // It's a course, so hide the message button
+
+        // Check if the userId is for a course or the current user, and hide the message button accordingly
+        if (userId.startsWith("Course:") || userId.equals(currentUserId)) {
             buttonMessage.setVisibility(View.GONE);
         } else {
-            // It's a user, so set up the message button
+            // It's a regular user, show the message button and set up the click listener
             buttonMessage.setVisibility(View.VISIBLE);
             buttonMessage.setOnClickListener(v -> {
                 Intent intent = new Intent(context, MessagingActivity.class);
@@ -49,34 +48,6 @@ public class UserAdapter extends ArrayAdapter<String> {
             });
         }
 
-        // Hide the message button for the current user
-        if (userId.equals(currentUserId) || userId.startsWith("Course:")) {
-            buttonMessage.setVisibility(View.GONE);
-        } else {
-            buttonMessage.setVisibility(View.VISIBLE);
-        }
-
         return convertView;
     }
-    public class ListItem {
-        public static final int TYPE_COURSE = 0;
-        public static final int TYPE_USER = 1;
-
-        private int type;
-        private String text;
-
-        public ListItem(int type, String text) {
-            this.type = type;
-            this.text = text;
-        }
-
-        public int getType() {
-            return type;
-        }
-
-        public String getText() {
-            return text;
-        }
-    }
-
 }
