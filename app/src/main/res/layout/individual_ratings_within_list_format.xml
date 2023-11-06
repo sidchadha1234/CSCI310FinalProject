@@ -1,0 +1,46 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/tvUsername"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Username" />
+
+    <TextView
+        android:id="@+id/tvRating"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Rating" />
+
+    <TextView
+        android:id="@+id/tvUpvotes"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Upvotes" />
+
+    <TextView
+        android:id="@+id/tvDownvotes"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Downvotes" />
+
+    <Button
+        android:id="@+id/btnUpvote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Upvote" />
+
+    <Button
+        android:id="@+id/btnDownvote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Downvote" />
+</LinearLayout>

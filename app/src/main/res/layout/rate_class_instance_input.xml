@@ -1,0 +1,47 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/workloadRating"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Workload Rating (1-10)"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/courseScore"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Course Score (1-10) "
+        android:inputType="number" />
+
+    <CheckBox
+        android:id="@+id/checksAttendance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Professor checks attendance" />
+
+    <CheckBox
+        android:id="@+id/allowsLateSubmission"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Professor allows late homework submission" />
+
+    <EditText
+        android:id="@+id/comments"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Other Comments"
+        android:inputType="textMultiLine" />
+
+    <Button
+        android:id="@+id/submitRating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Submit Rating"
+        android:layout_gravity="center" />
+
+</LinearLayout>

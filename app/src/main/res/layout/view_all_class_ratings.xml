@@ -1,0 +1,55 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/courseNameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Course Name"
+        android:textSize="20sp"
+        android:layout_marginBottom="10dp"/>
+
+    <TextView
+        android:id="@+id/averageWorkloadTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Average Workload: "
+        android:textSize="16sp"
+        android:layout_marginBottom="5dp"/>
+
+    <TextView
+        android:id="@+id/averageRatingTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Average Rating: "
+        android:textSize="16sp"
+        android:layout_marginBottom="5dp"/>
+
+    <TextView
+        android:id="@+id/averageAttendanceTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Average Attendance Checking: "
+        android:textSize="16sp"
+        android:layout_marginBottom="5dp"/>
+
+    <TextView
+        android:id="@+id/averageLateSubmissionTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Average Late Submission Allowance: "
+        android:textSize="16sp"
+        android:layout_marginBottom="10dp"/>
+
+    <ListView
+        android:id="@+id/ratingsListView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:divider="@android:color/darker_gray"
+        android:dividerHeight="0.5dp" />
+
+</LinearLayout>

@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -40,6 +41,10 @@ public class CourseDetailActivity extends AppCompatActivity {
     private DatabaseReference mDatabase; // Firebase database reference
     private String studentUid; // UID of the logged-in user
 
+    private Button buttonViewRatings;
+
+    private Button buttonRateClass;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +60,8 @@ public class CourseDetailActivity extends AppCompatActivity {
         textViewInstructor = findViewById(R.id.textViewInstructor);
         textViewEnrolled = findViewById(R.id.textViewEnrolled); // Initialize the enrolled TextView
         buttonRegisterCourse = findViewById(R.id.buttonRegisterCourse);
+        buttonViewRatings = findViewById(R.id.buttonViewClassRatings);
+        buttonRateClass = findViewById(R.id.buttonRateClass);
 
         // Initialize Firebase Database
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -99,8 +106,39 @@ public class CourseDetailActivity extends AppCompatActivity {
                 registerForCourse(courseName, departmentName, studentUid);
             }
         });
+
+        //go to View ratings activity
+        buttonViewRatings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                viewRatingsActivity(departmentName, courseName);
+            }
+        });
+
+        //go to Rate Class activity
+        buttonRateClass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                rateClassActivity(departmentName, courseName);
+            }
+        });
     }
 
+    //helper function view ratings
+    private void viewRatingsActivity(String departmentName, String courseName) {
+        Intent intent = new Intent(this, ViewRatingsActivity.class);
+        intent.putExtra("DEPARTMENT_NAME", departmentName);
+        intent.putExtra("COURSE_NAME", courseName);
+        startActivity(intent);
+    }
+
+    //helper function rate class
+    private void rateClassActivity(String departmentName, String courseName) {
+        Intent intent = new Intent(this, RateActivity.class);
+        intent.putExtra("DEPARTMENT_NAME", departmentName);
+        intent.putExtra("COURSE_NAME", courseName);
+        startActivity(intent);
+    }
     private void loadEnrolledCount(String courseName, String departmentName) {
         DatabaseReference enrolledRef = mDatabase.child(departmentName).child(courseName).child("enrolled");
         enrolledRef.addListenerForSingleValueEvent(new ValueEventListener() {

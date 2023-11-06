@@ -42,6 +42,22 @@
             android:exported="true" />
 
         <activity
+            android:name=".AdapterForListview"
+            android:exported="true" />
+
+        <activity
+            android:name=".CourseRatingInstance"
+            android:exported="true" />
+
+        <activity
+            android:name=".RateActivity"
+            android:exported="true" />
+
+        <activity
+            android:name=".ViewRatingsActivity"
+            android:exported="true" />
+
+        <activity
             android:name=".MessagingActivity"
             android:exported="true" />
 
