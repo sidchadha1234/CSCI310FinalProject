@@ -8,6 +8,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import android.content.Intent;
@@ -25,6 +27,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import android.widget.Spinner;
 public class MainActivity extends AppCompatActivity {
@@ -130,18 +135,14 @@ public class MainActivity extends AppCompatActivity {
                         String uscID = signUpUSCIDEditText.getText().toString();
                         User user = new User(name, uscID, email, userType);
 
-                        // Get a reference to the database and store the User object
-                        DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("students");
+                        // Save the user information and then the image
                         if (firebaseUser != null) {
+                            DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("students");
                             usersRef.child(firebaseUser.getUid()).setValue(user)
                                     .addOnCompleteListener(task1 -> {
                                         if (task1.isSuccessful()) {
-                                            Toast.makeText(MainActivity.this, "Sign Up Successful!", Toast.LENGTH_SHORT).show();
-
-                                            // Go to home page if successful
-                                            Intent intent = new Intent(MainActivity.this, HomePageActivity.class);
-                                            startActivity(intent);
-                                            finish();
+                                            // Only proceed with image upload if user data save is successful
+                                            uploadImageAndSaveUri(firebaseUser);
                                         } else {
                                             Toast.makeText(MainActivity.this, "Failed to save user data.", Toast.LENGTH_SHORT).show();
                                         }
@@ -153,6 +154,38 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this, "Error: " + errorMessage, Toast.LENGTH_LONG).show();
                     }
                 });
+    }
+    private void uploadImageAndSaveUri(FirebaseUser firebaseUser) {
+        if (imageUri != null) {
+            StorageReference storageReference = FirebaseStorage.getInstance().getReference("profileImages/" + firebaseUser.getUid() + ".jpg");
+            storageReference.putFile(imageUri)
+                    .addOnSuccessListener(taskSnapshot -> {
+                        // Get the download URL
+                        Task<Uri> downloadUriTask = taskSnapshot.getStorage().getDownloadUrl();
+                        downloadUriTask.addOnSuccessListener(uri -> {
+                            // Save the download URL to the user's profile
+                            DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("students");
+                            usersRef.child(firebaseUser.getUid()).child("profileImageUrl").setValue(uri.toString())
+                                    .addOnCompleteListener(task -> {
+                                        if (task.isSuccessful()) {
+                                            Toast.makeText(MainActivity.this, "Image Upload Successful", Toast.LENGTH_SHORT).show();
+                                            navigateToHomePage();
+                                        } else {
+                                            Toast.makeText(MainActivity.this, "Failed to upload image.", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                        });
+                    })
+                    .addOnFailureListener(e -> Toast.makeText(MainActivity.this, "Image upload failed: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+        } else {
+            navigateToHomePage(); // No image to upload, just navigate
+        }
+    }
+    private void navigateToHomePage() {
+        // Go to home page if successful
+        Intent intent = new Intent(MainActivity.this, HomePageActivity.class);
+        startActivity(intent);
+        finish();
     }
 
 

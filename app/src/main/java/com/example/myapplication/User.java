@@ -7,6 +7,7 @@ public class User {
     public String email;
     public String userType;
     public ArrayList<String> courses; // List to hold user courses
+    public String profileImageUrl; // Field to store the URL of the profile image
 
     public User() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
@@ -18,6 +19,17 @@ public class User {
         this.email = email;
         this.userType = userType;
         this.courses = new ArrayList<>(); // Initialize the courses list as empty
+        this.profileImageUrl = ""; // Initialize the profile image URL as empty
     }
-}
 
+    // Getters and setters for the profile image URL
+    public String getProfileImageUrl() {
+        return profileImageUrl;
+    }
+
+    public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
+    }
+
+    // ... other getters and setters ...
+}
