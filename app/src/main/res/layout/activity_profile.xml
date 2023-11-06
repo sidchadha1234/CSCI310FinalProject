@@ -4,13 +4,36 @@
     android:layout_height="match_parent"
     android:padding="16dp">
 
+    <!-- Profile Image at the top -->
+    <ImageView
+        android:id="@+id/imageViewProfile"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:src="@android:drawable/ic_menu_gallery" />
+
+    <!-- Change Image Button below the profile image -->
+    <Button
+        android:id="@+id/buttonChangeImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/imageViewProfile"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
+        android:text="Change Image" />
+
+    <!-- Name Label below the Change Image Button -->
     <TextView
         android:id="@+id/textViewNameLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/buttonChangeImage"
+        android:layout_marginTop="16dp"
         android:text="Name"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
+    <!-- Name EditText below the Name Label -->
     <EditText
         android:id="@+id/editTextName"
         android:layout_width="match_parent"
@@ -18,6 +41,7 @@
         android:layout_below="@id/textViewNameLabel"
         android:inputType="textPersonName" />
 
+    <!-- USC ID Label below the Name EditText -->
     <TextView
         android:id="@+id/textViewUSCIDLabel"
         android:layout_width="wrap_content"
@@ -26,6 +50,7 @@
         android:text="USC ID"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
+    <!-- USC ID EditText below the USC ID Label -->
     <EditText
         android:id="@+id/editTextUSCID"
         android:layout_width="match_parent"
@@ -33,6 +58,7 @@
         android:layout_below="@id/textViewUSCIDLabel"
         android:inputType="number" />
 
+    <!-- Email Label below the USC ID EditText -->
     <TextView
         android:id="@+id/textViewEmailLabel"
         android:layout_width="wrap_content"
@@ -41,6 +67,7 @@
         android:text="Email"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
+    <!-- Email EditText below the Email Label -->
     <EditText
         android:id="@+id/editTextEmail"
         android:layout_width="match_parent"
@@ -48,11 +75,13 @@
         android:layout_below="@id/textViewEmailLabel"
         android:inputType="textEmailAddress" />
 
+    <!-- Save Button below the Email EditText -->
     <Button
         android:id="@+id/buttonSave"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/editTextEmail"
+        android:layout_marginTop="16dp"
         android:text="Save" />
 
 </RelativeLayout>
