@@ -1,38 +1,39 @@
 package com.example.myapplication;
+
 public class Message {
-    private String senderEmail;
-    private String receiverEmail;
+    private String senderId;
+    private String receiverId;
     private String message;
-    private long timestamp; // Use System.currentTimeMillis() to generate the timestamp
+    private long timestamp;
 
     // Default constructor required for calls to DataSnapshot.getValue(Message.class)
     public Message() {
     }
 
     // Parameterized constructor
-    public Message(String senderEmail, String receiverEmail, String message) {
-        this.senderEmail = senderEmail;
-        this.receiverEmail = receiverEmail;
+    public Message(String senderId, String receiverId, String message) {
+        this.senderId = senderId;
+        this.receiverId = receiverId;
         this.message = message;
         this.timestamp = System.currentTimeMillis();
     }
 
-    // Getter and setter for senderEmail
+    // Getter and setter for senderId
     public String getSenderId() {
-        return senderEmail;
+        return senderId;
     }
 
-    public void setSenderEmail(String senderEmail) {
-        this.senderEmail = senderEmail;
+    public void setSenderId(String senderId) {
+        this.senderId = senderId;
     }
 
-    // Getter and setter for receiverEmail
-    public String getReceiverEmail() {
-        return receiverEmail;
+    // Getter and setter for receiverId
+    public String getReceiverId() {
+        return receiverId;
     }
 
-    public void setReceiverEmail(String receiverEmail) {
-        this.receiverEmail = receiverEmail;
+    public void setReceiverId(String receiverId) {
+        this.receiverId = receiverId;
     }
 
     // Getter and setter for message

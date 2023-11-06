@@ -41,7 +41,7 @@ public class HomePageActivity extends AppCompatActivity {
 
     //go to messages activity
     private void navigateToMessages() {
-        Intent intent = new Intent(this, MessagingActivity.class);
+        Intent intent = new Intent(this, registeredActivity.class);
         startActivity(intent);
     }
 }

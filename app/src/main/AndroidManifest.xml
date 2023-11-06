@@ -26,6 +26,9 @@
         <activity
             android:name=".HomePageActivity"
             android:exported="true" />
+        <activity
+            android:name=".registeredActivity"
+            android:exported="true" />
 
         <activity
             android:name=".ProfileActivity"
@@ -39,7 +42,7 @@
             android:exported="true" />
 
         <activity
-            android:name=".MessagesActivity"
+            android:name=".MessagingActivity"
             android:exported="true" />
 
     </application>
