@@ -30,18 +30,27 @@ public class UserAdapter extends ArrayAdapter<String> {
         }
 
         TextView textViewUser = convertView.findViewById(R.id.textViewUser);
+        //if statement to start if the user is a student or a course
         Button buttonMessage = convertView.findViewById(R.id.buttonMessage);
 
         String userId = getItem(position);
         textViewUser.setText(userId);
-        buttonMessage.setOnClickListener(v -> {
-            Intent intent = new Intent(context, MessagingActivity.class);
-            intent.putExtra("OTHER_USER_ID", userId);
-            context.startActivity(intent);
-        });
+        // Check if the userId starts with "Course:"
+        if (userId.startsWith("Course:")) {
+            // It's a course, so hide the message button
+            buttonMessage.setVisibility(View.GONE);
+        } else {
+            // It's a user, so set up the message button
+            buttonMessage.setVisibility(View.VISIBLE);
+            buttonMessage.setOnClickListener(v -> {
+                Intent intent = new Intent(context, MessagingActivity.class);
+                intent.putExtra("OTHER_USER_ID", userId);
+                context.startActivity(intent);
+            });
+        }
 
         // Hide the message button for the current user
-        if (userId.equals(currentUserId)) {
+        if (userId.equals(currentUserId) || userId.startsWith("Course:")) {
             buttonMessage.setVisibility(View.GONE);
         } else {
             buttonMessage.setVisibility(View.VISIBLE);
