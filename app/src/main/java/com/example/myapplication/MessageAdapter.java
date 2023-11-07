@@ -9,7 +9,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
-public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHolder> {
+public class MessageAdapter  {
+   /*
+
     private List<Message> messageList;
     private String currentUserId;
 
@@ -54,4 +56,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             // If you have other views like timestamp, you should initialize them here.
         }
     }
+
+    */
 }

@@ -1,56 +1,35 @@
 package com.example.myapplication;
 
+import java.util.Date;
+
 public class Message {
-    private String senderId;
-    private String receiverId;
-    private String message;
-    private long timestamp;
-
-    // Default constructor required for calls to DataSnapshot.getValue(Message.class)
-    public Message() {
+    private String messageText;
+    private String messageUser;
+    private long messageTime;
+    public Message(String messageText, String messageUser) {
+        this.messageText = messageText;
+        this.messageUser = messageUser;
+        // Initialize to current time
+        messageTime = new Date().getTime();
     }
-
-    // Parameterized constructor
-    public Message(String senderId, String receiverId, String message) {
-        this.senderId = senderId;
-        this.receiverId = receiverId;
-        this.message = message;
-        this.timestamp = System.currentTimeMillis();
+    public Message(){
     }
-
-    // Getter and setter for senderId
-    public String getSenderId() {
-        return senderId;
+    public String getMessageText() {
+        return messageText;
     }
-
-    public void setSenderId(String senderId) {
-        this.senderId = senderId;
+    public void setMessageText(String messageText) {
+        this.messageText = messageText;
     }
-
-    // Getter and setter for receiverId
-    public String getReceiverId() {
-        return receiverId;
+    public String getMessageUser() {
+        return messageUser;
     }
-
-    public void setReceiverId(String receiverId) {
-        this.receiverId = receiverId;
+    public void setMessageUser(String messageUser) {
+        this.messageUser = messageUser;
     }
-
-    // Getter and setter for message
-    public String getMessage() {
-        return message;
+    public long getMessageTime() {
+        return messageTime;
     }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    // Getter and setter for timestamp
-    public long getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(long timestamp) {
-        this.timestamp = timestamp;
+    public void setMessageTime(long messageTime) {
+        this.messageTime = messageTime;
     }
 }

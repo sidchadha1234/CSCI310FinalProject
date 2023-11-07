@@ -209,7 +209,7 @@ public class CourseDetailActivity extends AppCompatActivity {
                     if (databaseError != null && databaseError.getCode() == DatabaseError.PERMISSION_DENIED) {
                         Toast.makeText(CourseDetailActivity.this, "You are already registered for this course.", Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(CourseDetailActivity.this, "Registration failed, class may be full.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(CourseDetailActivity.this, "Registration failed, you are already enrolled or class is full.", Toast.LENGTH_SHORT).show();
                     }
                 }
             }

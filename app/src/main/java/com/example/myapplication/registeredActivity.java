@@ -18,8 +18,8 @@ import java.util.List;
 public class registeredActivity extends AppCompatActivity {
 
     private ListView listView;
-    private UserAdapter adapter; // Use UserAdapter instead of ArrayAdapter
-    private List<String> registeredUserIds = new ArrayList<>(); // This should be the list of user IDs
+    private UserAdapter adapter;
+    private List<String> registeredUserIds = new ArrayList<>();
     private FirebaseAuth mAuth;
 
     @Override
@@ -31,28 +31,40 @@ public class registeredActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference csRef = database.getReference("Computer Science");
+        DatabaseReference rootRef = database.getReference(); // Reference to the root of the database
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
             String currentUserId = currentUser.getUid();
-            adapter = new UserAdapter(this, registeredUserIds, currentUserId); // Initialize UserAdapter
+            adapter = new UserAdapter(this, registeredUserIds, currentUserId);
             listView.setAdapter(adapter);
 
-            csRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            // Listen for single value event at the root of your database
+            rootRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    for (DataSnapshot courseSnapshot : dataSnapshot.getChildren()) {
-                        String courseName = courseSnapshot.getKey();
-                        DataSnapshot studentsSnapshot = courseSnapshot.child("students");
-                        if (studentsSnapshot.hasChild(currentUserId)) { // The current user is enrolled in the course
-                            // Add course to the list (if you still want to show courses)
-                            registeredUserIds.add("Course: " + courseName);
-                            // Iterate over student IDs
-                            for (DataSnapshot studentSnapshot : studentsSnapshot.getChildren()) {
-                                String studentId = studentSnapshot.getKey();
-                                if (!studentId.equals(currentUserId)) { // Don't add the current user
-                                    registeredUserIds.add(studentId);
+                    // Iterate through all departments
+                    for (DataSnapshot departmentSnapshot : dataSnapshot.getChildren()) {
+                        // Skip the "students" node
+                        if (departmentSnapshot.getKey().equals("students")) continue;
+
+                        // Iterate through all courses within a department
+                        for (DataSnapshot courseSnapshot : departmentSnapshot.getChildren()) {
+                            String courseName = courseSnapshot.getKey();
+                            DataSnapshot studentsSnapshot = courseSnapshot.child("students");
+
+                            // Check if the current user is enrolled in the course
+                            if (studentsSnapshot.hasChild(currentUserId)) {
+                                // Add course to the list with department name
+                                String departmentName = departmentSnapshot.getKey();
+                                registeredUserIds.add("Course: " + departmentName + " - " + courseName);
+
+                                // Iterate over student IDs
+                                for (DataSnapshot studentSnapshot : studentsSnapshot.getChildren()) {
+                                    String studentId = studentSnapshot.getKey();
+                                    if (!studentId.equals(currentUserId)) {
+                                        registeredUserIds.add(studentId);
+                                    }
                                 }
                             }
                         }
