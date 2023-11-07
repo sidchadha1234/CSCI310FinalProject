@@ -1,34 +1,62 @@
+
 package com.example.myapplication;
 
 public class CourseRatingInstance {
-    private int workloadRating;
-    private int courseScore;
-    private boolean checksAttendance;
-    private boolean allowsLateSubmission;
+    // Use Integer for numeric fields to handle potential null values from Firebase
+    private Integer workloadRating;
+    private Integer courseScore;
+    private Boolean checksAttendance;
+    private Boolean allowsLateSubmission;
     private String comments;
     private String username;
-    private int upvotes;
-    private int downvotes;
+    private Integer upvotes;
+    private Integer downvotes;
+    // FirebaseKey, departmentName, and courseName are optional and can be null.
     private String firebaseKey;
     private String departmentName;
     private String courseName;
 
-    // Constructor
-    public CourseRatingInstance(int workloadRating, int courseScore, boolean checksAttendance, boolean allowsLateSubmission, String comments, String username, String departmentName, String courseName) {
+    private String userId;
+
+    // Default no-argument constructor required for Firebase
+    public CourseRatingInstance() {
+        // Default constructor required for calls to DataSnapshot.getValue(CourseRatingInstance.class)
+    }
+
+    // Parametrized constructor for manual object creation
+    public CourseRatingInstance(Integer workloadRating, Integer courseScore, Boolean checksAttendance, Boolean allowsLateSubmission, String comments, String username, String departmentName, String courseName, String userId) {
         this.workloadRating = workloadRating;
         this.courseScore = courseScore;
         this.checksAttendance = checksAttendance;
         this.allowsLateSubmission = allowsLateSubmission;
         this.comments = comments;
         this.username = username;
+        // Set default values for upvotes and downvotes as they are integers and cannot be null.
         this.upvotes = 0;
         this.downvotes = 0;
         this.firebaseKey = "";
         this.departmentName = departmentName;
         this.courseName = courseName;
+        this.userId = userId;
     }
 
-    // Getters and Setters
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+    public Integer getWorkloadRating() {
+        return workloadRating != null ? workloadRating : 0; // Replace 0 with a default value if needed
+    }
+
+    public void setWorkloadRating(Integer workloadRating) {
+        this.workloadRating = workloadRating;
+    }
+
+
     public String getDepartmentName() {
         return departmentName;
     }
@@ -58,7 +86,7 @@ public class CourseRatingInstance {
     public void setUsername(String username) {
         this.username = username;
     }
-    public int getUpvotes() {
+    public Integer getUpvotes() {
         return upvotes;
     }
 
@@ -66,22 +94,22 @@ public class CourseRatingInstance {
         this.upvotes = upvotes;
     }
 
-    public int getDownvotes() {
+    public Integer getDownvotes() {
         return downvotes;
     }
 
     public void setDownvotes(int downvotes) {
         this.downvotes = downvotes;
     }
-    public int getWorkloadRating() {
-        return workloadRating;
-    }
+//    public int getWorkloadRating() {
+//        return workloadRating;
+//    }
+//
+//    public void setWorkloadRating(int workloadRating) {
+//        this.workloadRating = workloadRating;
+//    }
 
-    public void setWorkloadRating(int workloadRating) {
-        this.workloadRating = workloadRating;
-    }
-
-    public int getCourseScore() {
+    public Integer getCourseScore() {
         return courseScore;
     }
 
@@ -112,4 +140,6 @@ public class CourseRatingInstance {
     public void setComments(String comments) {
         this.comments = comments;
     }
+
 }
+

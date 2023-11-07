@@ -16,7 +16,7 @@
         android:id="@+id/averageWorkloadTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Average Workload: "
+        android:text="Average Workload (1-10): "
         android:textSize="16sp"
         android:layout_marginBottom="5dp"/>
 
@@ -24,7 +24,7 @@
         android:id="@+id/averageRatingTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Average Rating: "
+        android:text="Average Rating (1-10): "
         android:textSize="16sp"
         android:layout_marginBottom="5dp"/>
 
@@ -32,7 +32,7 @@
         android:id="@+id/averageAttendanceTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Average Attendance Checking: "
+        android:text="Average Attendance Checking (0.0-1.0): "
         android:textSize="16sp"
         android:layout_marginBottom="5dp"/>
 
@@ -40,7 +40,7 @@
         android:id="@+id/averageLateSubmissionTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Average Late Submission Allowance: "
+        android:text="Average Late Submission Allowance (0.0-1.0): "
         android:textSize="16sp"
         android:layout_marginBottom="10dp"/>
 

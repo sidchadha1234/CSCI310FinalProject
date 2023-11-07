@@ -1,46 +1,118 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:padding="10dp">
 
-    <TextView
-        android:id="@+id/tvUsername"
-        android:layout_width="0dp"
+    <!-- Information fields -->
+    <!-- Username Row -->
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="Username" />
+        android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/tvRating"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="Rating" />
+        <TextView
+            android:id="@+id/usernameTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Username: Matt Shapiro" />
 
-    <TextView
-        android:id="@+id/tvUpvotes"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="Upvotes" />
+    </LinearLayout>
 
-    <TextView
-        android:id="@+id/tvDownvotes"
-        android:layout_width="0dp"
+    <!-- Workload Rating Row -->
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="Downvotes" />
+        android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/btnUpvote"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Upvote" />
+        <TextView
+            android:id="@+id/tvWorkloadRating"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Workload Rating: 6" />
 
-    <Button
-        android:id="@+id/btnDownvote"
-        android:layout_width="wrap_content"
+    </LinearLayout>
+
+    <!-- Attendance Row -->
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Downvote" />
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tvAttendanceCheck"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Prof Checks Attendance: Yes" />
+
+    </LinearLayout>
+
+    <!-- Late HW Row -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tvLateHW"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Prof Allows Late HW: Yes" />
+
+    </LinearLayout>
+
+    <!-- Class Rating Row -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tvClassRating"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Course Rating: 7" />
+
+    </LinearLayout>
+
+    <!-- Comments and Buttons Row -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/tvComments"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:text="Comments: Test #1 Following username bug fix, you know what it isssss" />
+
+        <!-- Buttons Container -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center">
+
+            <Button
+                android:id="@+id/btnUpvote"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Upvote 0" />
+
+            <Button
+                android:id="@+id/btnDownvote"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Downvote 0" />
+        </LinearLayout>
+    </LinearLayout>
+
 </LinearLayout>

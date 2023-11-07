@@ -9,8 +9,14 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
@@ -20,8 +26,8 @@ public class AdapterForListview extends ArrayAdapter<CourseRatingInstance> {
     private DatabaseReference mDatabase;
 
     public AdapterForListview(Context context, List<CourseRatingInstance> items) {
-        super(context, R.layout.individual_ratings_within_list_format, items); // replace R.layout.individual_rating_layout with your actual layout resource ID for individual ratings
-        this.resourceLayout = R.layout.individual_ratings_within_list_format;
+        super(context, R.layout.individual_ratings_within_list_format, items); // Update this layout reference if needed
+        this.resourceLayout = R.layout.individual_ratings_within_list_format; // Update this layout reference if needed
         this.mContext = context;
         mDatabase = FirebaseDatabase.getInstance().getReference();
     }
@@ -30,62 +36,129 @@ public class AdapterForListview extends ArrayAdapter<CourseRatingInstance> {
     public View getView(int position, View convertView, ViewGroup parent) {
         View v = convertView;
         if (v == null) {
-            LayoutInflater vi;
-            vi = LayoutInflater.from(mContext);
+            LayoutInflater vi = LayoutInflater.from(mContext);
             v = vi.inflate(resourceLayout, null);
         }
 
         CourseRatingInstance p = getItem(position);
 
         if (p != null) {
-            TextView tvUsername = (TextView) v.findViewById(R.id.tvUsername);
-            TextView tvRating = (TextView) v.findViewById(R.id.tvRating);
-            TextView tvUpvotes = (TextView) v.findViewById(R.id.tvUpvotes);
-            TextView tvDownvotes = (TextView) v.findViewById(R.id.tvDownvotes);
-            Button btnUpvote = (Button) v.findViewById(R.id.btnUpvote);
-            Button btnDownvote = (Button) v.findViewById(R.id.btnDownvote);
+            TextView tvUsername = v.findViewById(R.id.usernameTextView);
+            TextView tvWorkload = v.findViewById(R.id.tvWorkloadRating);
+            TextView tvRating = v.findViewById(R.id.tvClassRating);
+            TextView tvComments = v.findViewById(R.id.tvComments);
+            TextView tvAttendanceCheck = v.findViewById(R.id.tvAttendanceCheck);
+            TextView tvLateHW = v.findViewById(R.id.tvLateHW);
 
-            if (tvUsername != null) {
-                tvUsername.setText(p.getUsername());
-            }
-            if (tvRating != null) {
-                String ratingText = "Workload: " + p.getWorkloadRating() + ", Score: " + p.getCourseScore();
-                tvRating.setText(ratingText);
-            }
-            if (tvUpvotes != null) {
-                tvUpvotes.setText(String.valueOf(p.getUpvotes()));
-            }
-            if (tvDownvotes != null) {
-                tvDownvotes.setText(String.valueOf(p.getDownvotes()));
-            }
+            Button btnUpvote = v.findViewById(R.id.btnUpvote);
+            Button btnDownvote = v.findViewById(R.id.btnDownvote);
 
-            btnUpvote.setOnClickListener(new View.OnClickListener() {
+            tvUsername.setText("Username: " + p.getUsername());
+            tvWorkload.setText("Workload Rating: " + p.getWorkloadRating());
+            tvRating.setText("Course Rating: " + p.getCourseScore());
+            tvComments.setText("Comments: " + p.getComments());
+            tvAttendanceCheck.setText(p.isChecksAttendance() ? "Prof Checks Attendance: Yes" : "Prof Checks Attendance: No");
+            tvLateHW.setText(p.isAllowsLateSubmission() ? "Prof Allows Late HW: Yes" : "Prof Allows Late HW: No");
+
+            int initialUpvotes = p.getUpvotes() != null ? p.getUpvotes() : 0;
+            int initialDownvotes = p.getDownvotes() != null ? p.getDownvotes() : 0;
+            btnUpvote.setText("Upvote " + initialUpvotes);
+            btnDownvote.setText("Downvote " + initialDownvotes);
+
+            String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            DatabaseReference interactionsRef = mDatabase.child(p.getDepartmentName()).child(p.getCourseName()).child("ratings").child(p.getFirebaseKey()).child("interactions");
+
+            interactionsRef.child(currentUserId).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
-                public void onClick(View v) {
-                    int newUpvoteCount = p.getUpvotes() + 1;
-                    mDatabase.child("departments").child(p.getDepartmentName()).child("courses").child(p.getCourseName()).child("ratings").child(p.getFirebaseKey()).child("upvotes").setValue(newUpvoteCount)
-                            .addOnSuccessListener(aVoid -> {
-                                p.setUpvotes(newUpvoteCount);
-                                notifyDataSetChanged();
-                            })
-                            .addOnFailureListener(e -> Toast.makeText(mContext, "Failed to update upvote.", Toast.LENGTH_SHORT).show());
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        String interactionType = dataSnapshot.getValue(String.class);
+                        if ("like".equals(interactionType)) {
+                            btnUpvote.setEnabled(false);
+                            btnDownvote.setEnabled(true);
+                        } else if ("dislike".equals(interactionType)) {
+                            btnDownvote.setEnabled(false);
+                            btnUpvote.setEnabled(true);
+                        }
+                    } else {
+                        btnUpvote.setEnabled(true);
+                        btnDownvote.setEnabled(true);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Toast.makeText(mContext, "Error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
 
-            btnDownvote.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int newDownvoteCount = p.getDownvotes() + 1;
-                    mDatabase.child("departments").child(p.getDepartmentName()).child("courses").child(p.getCourseName()).child("ratings").child(p.getFirebaseKey()).child("downvotes").setValue(newDownvoteCount)
-                            .addOnSuccessListener(aVoid -> {
-                                p.setDownvotes(newDownvoteCount);
-                                notifyDataSetChanged();
-                            })
-                            .addOnFailureListener(e -> Toast.makeText(mContext, "Failed to update downvote.", Toast.LENGTH_SHORT).show());
-                }
-            });
+            btnUpvote.setOnClickListener(y -> updateVote(interactionsRef, currentUserId, "like", p, btnUpvote, btnDownvote, true));
+            btnDownvote.setOnClickListener(y -> updateVote(interactionsRef, currentUserId, "dislike", p, btnDownvote, btnUpvote, false));
         }
 
         return v;
     }
+
+    private void updateVote(DatabaseReference interactionsRef, String userId, String voteType, CourseRatingInstance rating, Button votedButton, Button otherButton, boolean isUpvote) {
+        interactionsRef.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String previousVote = dataSnapshot.getValue(String.class);
+                boolean isChangingVote = previousVote != null && !previousVote.equals(voteType);
+
+                // Set the new vote type
+                interactionsRef.child(userId).setValue(voteType).addOnSuccessListener(aVoid -> {
+                    DatabaseReference ratingRef = mDatabase.child(rating.getDepartmentName()).child(rating.getCourseName()).child("ratings").child(rating.getFirebaseKey());
+
+                    ratingRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            int currentUpvotes = dataSnapshot.child("upvotes").getValue(Integer.class);
+                            int currentDownvotes = dataSnapshot.child("downvotes").getValue(Integer.class);
+
+                            // Adjust vote counts based on previous vote and new vote
+                            if (isUpvote) {
+                                if (!isChangingVote || "dislike".equals(previousVote)) {
+                                    rating.setUpvotes(currentUpvotes + 1);
+                                }
+                                if ("dislike".equals(previousVote) && currentDownvotes > 0) {
+                                    rating.setDownvotes(currentDownvotes - 1);
+                                }
+                            } else {
+                                if (!isChangingVote || "like".equals(previousVote)) {
+                                    rating.setDownvotes(currentDownvotes + 1);
+                                }
+                                if ("like".equals(previousVote) && currentUpvotes > 0) {
+                                    rating.setUpvotes(currentUpvotes - 1);
+                                }
+                            }
+
+                            // Push the updated counts back to the database
+                            ratingRef.child("upvotes").setValue(rating.getUpvotes());
+                            ratingRef.child("downvotes").setValue(rating.getDownvotes());
+
+                            // Update the button texts
+                            votedButton.setText((isUpvote ? "Upvote " : "Downvote ") + (isUpvote ? rating.getUpvotes() : rating.getDownvotes()));
+                            otherButton.setText((isUpvote ? "Downvote " : "Upvote ") + (isUpvote ? rating.getDownvotes() : rating.getUpvotes()));
+                            votedButton.setEnabled(false);
+                            otherButton.setEnabled(true);
+
+                            notifyDataSetChanged();
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            Toast.makeText(mContext, "Failed to update counts: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }).addOnFailureListener(e -> Toast.makeText(mContext, "Failed to update vote.", Toast.LENGTH_SHORT).show());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(mContext, "Failed to retrieve previous vote: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 }
+
