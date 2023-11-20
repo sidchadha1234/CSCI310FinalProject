@@ -34,7 +34,9 @@ public class UserAdapter extends ArrayAdapter<String> {
         this.currentUserId = currentUserId;
         this.mDatabase = FirebaseDatabase.getInstance().getReference();
     }
-
+    public void setDatabase(DatabaseReference database) {
+        this.mDatabase = database;
+    }
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         final View finalConvertView; // Declare a final reference to the convertView

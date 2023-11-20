@@ -33,23 +33,47 @@ import com.google.firebase.storage.UploadTask;
 
 import android.widget.Spinner;
 public class MainActivity extends AppCompatActivity {
-    private Spinner userTypeSpinner;
-
+    public Spinner userTypeSpinner;
+    private FirebaseAuthWrapper authWrapper;
     private FirebaseAuth mAuth;
-    private EditText signUpNameEditText, signUpUSCIDEditText, signUpPasswordEditText, confirmPasswordEditText;
+    public EditText signUpNameEditText, signUpUSCIDEditText, signUpPasswordEditText, confirmPasswordEditText;
     private EditText editTextGmail, editTextUSCID, loginUSCIDEditText, loginPasswordEditText;
-    private Button signUpConfirmButton, loginButton;
+    public Button signUpConfirmButton, loginButton;
     private ImageView imageViewProfile;
     private static final int PICK_IMAGE = 100;
     Uri imageUri;
+    private DatabaseReference mDatabase;
+    private StorageReference mStorageRef;
+    // Dependency Injection via constructor or setter for testing
+    public void setFirebaseAuth(FirebaseAuth firebaseAuth) {
+        mAuth = firebaseAuth;
+    }
 
+    public void setDatabaseReference(DatabaseReference databaseReference) {
+        mDatabase = databaseReference;
+    }
+
+    public void setStorageReference(StorageReference storageReference) {
+        mStorageRef = storageReference;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Initialize Firebase Auth
+        if (mAuth == null) {
+            mAuth = FirebaseAuth.getInstance();
+        }
+        if (mDatabase == null) {
+            mDatabase = FirebaseDatabase.getInstance().getReference();
+        }
+        if (mStorageRef == null) {
+            mStorageRef = FirebaseStorage.getInstance().getReference();
+        }
+
+        // Initialize Firebase Auth Wrapper
         mAuth = FirebaseAuth.getInstance();
+        authWrapper = new FirebaseAuthWrapper(mAuth);
 
         // UI components
         signUpNameEditText = findViewById(R.id.signUpNameEditText);
@@ -69,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
         imageViewProfile.setOnClickListener(v -> openGallery());
 
         signUpConfirmButton.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
                 String name = signUpNameEditText.getText().toString();
@@ -123,8 +148,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void signUp(String email, String password, String userType) {
-        mAuth.createUserWithEmailAndPassword(email, password)
+    public void signUp(String email, String password, String userType) {
+        authWrapper.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
                         // Get the newly created user
@@ -191,8 +216,8 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    private void login(String uscID, String password) {
-        mAuth.signInWithEmailAndPassword(uscID, password)
+    public void login(String uscID, String password) {
+        authWrapper.signInWithEmailAndPassword(uscID, password)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
                         FirebaseUser user = mAuth.getCurrentUser();
@@ -208,6 +233,10 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this, "Login Failed! Error: " + errorMessage, Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    public void setAuthWrapper(FirebaseAuthWrapper authWrapper) {
+        this.authWrapper = authWrapper;
     }
 
 }

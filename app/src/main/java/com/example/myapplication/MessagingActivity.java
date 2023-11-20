@@ -6,85 +6,112 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-
+import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.firebase.ui.database.FirebaseListOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class MessagingActivity extends AppCompatActivity {
+    private static boolean isInTestMode = false;
 
     private FirebaseListAdapter<Message> adapter;
     private String otherUserId;
+    private DatabaseReference chatsRef;
 
+    // Constructor used for testing
+
+
+    // Default constructor should be used only when the class is initialized in a real environment
+    public MessagingActivity() {
+        if (!isInEditMode()) {
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            this.chatsRef = database.getReference("chats");
+        }
+    }
+    // Overloaded constructor for testing purposes
+    public MessagingActivity(DatabaseReference chatsRef) {
+        this.chatsRef = chatsRef;
+    }
+
+    // ... Rest of your MessagingActivity methods
+
+    private boolean isInEditMode() {
+        return isInTestMode;
+    }
+
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    public static void setTestMode(boolean testMode) {
+        isInTestMode = testMode;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_messaging);
 
-        // Retrieve the OTHER_USER_ID from the intent
         otherUserId = getIntent().getStringExtra("OTHER_USER_ID");
         String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
-        String chatId = createChatId(currentUserId, otherUserId); // Method to create a unique chat ID
+        String chatId = createChatId(currentUserId, otherUserId);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(view -> {
             EditText input = findViewById(R.id.input);
-            FirebaseDatabase.getInstance()
-                    .getReference()
-                    .child("chats")
-                    .child(chatId)
-                    .push()
-                    .setValue(new Message(input.getText().toString(), currentUserId)); // Use currentUserId for the message
+            sendMessage(input.getText().toString(), currentUserId, chatId);
             input.setText("");
         });
+
         displayChatMessages(chatId);
     }
-
 
     @Override
     protected void onStart() {
         super.onStart();
-        // Start listening for changes in the chat
-        if(adapter != null) {
+        if (adapter != null) {
             adapter.startListening();
         }
     }
 
+    public void sendMessage(String messageText, String userId, String chatId) {
+        // Sends a message to the Firebase database
+        Message message = new Message(messageText, userId);
+        chatsRef.child(chatId).push().setValue(message);
+    }
 
-    private void displayChatMessages(String chatId) {
+    public void displayChatMessages(String chatId) {
+        if (adapter == null) {
+            FirebaseListOptions<Message> options = new FirebaseListOptions.Builder<Message>()
+                    .setQuery(chatsRef.child(chatId), Message.class)
+                    .setLayout(R.layout.message_item)
+                    .build();
+
+            adapter = new FirebaseListAdapter<Message>(options) {
+                @Override
+                protected void populateView(View v, Message model, int position) {
+                    TextView messageText = v.findViewById(R.id.message_text);
+                    TextView messageUser = v.findViewById(R.id.message_user);
+                    TextView messageTime = v.findViewById(R.id.message_time);
+
+                    messageText.setText(model.getMessageText());
+                    messageUser.setText(model.getMessageUser());
+                    messageTime.setText(DateFormat.format("dd-MM-yyyy (HH:mm:ss)", model.getMessageTime()));
+                }
+            };
+        }
+
         ListView listOfMessages = findViewById(R.id.list_of_messages);
-
-        FirebaseListOptions<Message> options = new FirebaseListOptions.Builder<Message>()
-                .setQuery(FirebaseDatabase.getInstance().getReference().child("chats").child(chatId), Message.class)
-                .setLayout(R.layout.message_item)
-                .build();
-
-        adapter = new FirebaseListAdapter<Message>(options) {
-            @Override
-            protected void populateView(View v, Message model, int position) {
-                TextView messageText = v.findViewById(R.id.message_text);
-                TextView messageUser = v.findViewById(R.id.message_user);
-                TextView messageTime = v.findViewById(R.id.message_time);
-
-                messageText.setText(model.getMessageText());
-                messageUser.setText(model.getMessageUser());
-                messageTime.setText(DateFormat.format("dd-MM-yyyy (HH:mm:ss)",
-                        model.getMessageTime()));
-            }
-        };
-
         listOfMessages.setAdapter(adapter);
     }
-    private String createChatId(String currentUserId, String otherUserId) {
-        if (currentUserId.compareTo(otherUserId) < 0) {
-            return currentUserId + "_" + otherUserId;
-        } else {
-            return otherUserId + "_" + currentUserId;
-        }
+
+    public String createChatId(String currentUserId, String otherUserId) {
+        return currentUserId.compareTo(otherUserId) < 0 ? currentUserId + "_" + otherUserId : otherUserId + "_" + currentUserId;
+    }
+
+    // Setter for the adapter, visible for testing
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    void setAdapter(FirebaseListAdapter<Message> adapter) {
+        this.adapter = adapter;
     }
 }

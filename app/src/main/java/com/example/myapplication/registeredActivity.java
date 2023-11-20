@@ -19,14 +19,38 @@ public class registeredActivity extends AppCompatActivity {
 
     private ListView listView;
     private UserAdapter adapter;
-    private List<String> registeredUserIds = new ArrayList<>();
+    public List<String> registeredUserIds = new ArrayList<>();
     private FirebaseAuth mAuth;
+    private DatabaseReference mDatabase;
+    public registeredActivity() {
+        super();
+    }
+    // Add a constructor that allows you to inject mocked FirebaseAuth and DatabaseReference
+    public registeredActivity(FirebaseAuth auth, DatabaseReference database) {
+        mAuth = auth;
+        mDatabase = database;
+    }
+
+    // If you don't have them already, add setter methods for dependency injection
+    public void setAuth(FirebaseAuth auth) {
+        mAuth = auth;
+    }
+
+    public void setDatabase(DatabaseReference database) {
+        mDatabase = database;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registered_classes);
 
+        if (mAuth == null) {
+            mAuth = FirebaseAuth.getInstance();
+        }
+        if (mDatabase == null) {
+            mDatabase = FirebaseDatabase.getInstance().getReference();
+        }
         listView = findViewById(R.id.lv_registered_classes);
 
         mAuth = FirebaseAuth.getInstance();

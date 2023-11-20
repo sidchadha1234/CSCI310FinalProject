@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class HomePageActivity extends AppCompatActivity {
 
-    private Button profileButton, departmentsButton, messagesButton;
+    public Button profileButton, departmentsButton, messagesButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

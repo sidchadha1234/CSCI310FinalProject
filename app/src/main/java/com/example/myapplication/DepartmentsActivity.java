@@ -17,7 +17,7 @@ public class DepartmentsActivity extends AppCompatActivity {
 
     private Spinner spinnerDepartments;
     private ListView listViewCourses;
-    private Button buttonSelectCourse;
+    public Button buttonSelectCourse;
     private TextView departmentLabel;
     private String selectedCourse; // Variable to store the selected course
     private String currentDepartment; // Variable to store the currently viewed department

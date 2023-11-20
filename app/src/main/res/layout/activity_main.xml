@@ -1,39 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:padding="12dp">
 
     <LinearLayout
+        android:id="@+id/main_activity_root"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-
         <!-- SignUp Layout -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Sign Up"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:textStyle="bold" />
 
         <EditText
             android:id="@+id/signUpNameEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Name" />
+            android:hint="Name"
+            android:textSize="14sp" />
 
-        <!-- EditText for Gmail - Removed android:layout_below as it is not needed in LinearLayout -->
+        <!-- EditText for Gmail -->
         <EditText
             android:id="@+id/editTextGmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Enter your Gmail"
             android:inputType="textEmailAddress"
-            android:layout_marginTop="16dp" />
+            android:layout_marginTop="12dp"
+            android:textSize="14sp" />
 
-        <!-- EditText for USC ID - Removed android:layout_below for the same reason -->
+        <!-- EditText for USC ID -->
         <EditText
             android:id="@+id/signUpUSCIDEditText"
             android:layout_width="match_parent"
@@ -41,75 +44,81 @@
             android:hint="Enter your USC ID"
             android:inputType="number"
             android:maxLength="10"
-            android:layout_marginTop="16dp" />
-
+            android:layout_marginTop="12dp"
+            android:textSize="14sp" />
 
         <EditText
             android:id="@+id/signUpPasswordEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Password"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:textSize="14sp" />
 
         <EditText
             android:id="@+id/confirmPasswordEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Confirm Password"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:textSize="14sp" />
+
         <Spinner
             android:id="@+id/userTypeSpinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:entries="@array/user_types"
-            android:layout_marginTop="16dp" />
+            android:layout_marginTop="12dp" />
 
         <ImageView
             android:id="@+id/imageViewProfile"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:src="@android:drawable/sym_def_app_icon"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="12dp"
             android:layout_below="@id/signUpUSCIDEditText"
             android:layout_centerHorizontal="true" />
-
 
         <Button
             android:id="@+id/signUpConfirmButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Sign Up" />
+            android:text="Sign Up"
+            android:textSize="14sp" />
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="24dp" />
+            android:layout_height="20dp" />
 
         <!-- Login Layout -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Login"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:textStyle="bold" />
 
         <EditText
             android:id="@+id/loginUSCIDEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="USC ID" />
+            android:hint="USC ID"
+            android:textSize="14sp" />
 
         <EditText
             android:id="@+id/loginPasswordEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Password"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:textSize="14sp" />
 
         <Button
             android:id="@+id/loginButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Login" />
+            android:text="Login"
+            android:textSize="14sp" />
 
     </LinearLayout>
 

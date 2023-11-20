@@ -29,7 +29,7 @@ import com.google.firebase.storage.StorageReference;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    private EditText nameEditText, uscIdEditText, emailEditText;
+    public EditText nameEditText, uscIdEditText, emailEditText;
     private Button saveButton;
     private DatabaseReference mDatabase;
     private FirebaseUser user;
@@ -74,7 +74,7 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
-    private void loadUserInfo() {
+    public void loadUserInfo() {
         if (user != null) {
             String userId = user.getUid();
             DatabaseReference userRef = mDatabase.child("students").child(userId);
@@ -142,7 +142,7 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
-    private void uploadImageToFirebase() {
+    public void uploadImageToFirebase() {
         if (imageUri != null && user != null) {
             StorageReference storageReference = FirebaseStorage.getInstance().getReference("profileImages/" + user.getUid() + ".jpg");
             storageReference.putFile(imageUri)
@@ -168,7 +168,7 @@ public class ProfileActivity extends AppCompatActivity {
 
 
 
-    private void saveUserInfo() {
+    public void saveUserInfo() {
         // Here you would save the user's information to the database
         String name = nameEditText.getText().toString();
         String uscID = uscIdEditText.getText().toString();

@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.google.firebase.database.FirebaseDatabase;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -44,6 +45,14 @@ public class CourseDetailActivity extends AppCompatActivity {
     private Button buttonViewRatings;
 
     private Button buttonRateClass;
+    private FirebaseAuth firebaseAuth; // You would add this member variable
+
+    public void setDatabase(FirebaseDatabase firebaseDatabase) {
+        this.mDatabase = firebaseDatabase.getReference();
+    }
+    public void setFirebaseAuth(FirebaseAuth firebaseAuth) {
+        this.firebaseAuth = firebaseAuth;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +104,7 @@ public class CourseDetailActivity extends AppCompatActivity {
             }
         }
         // TODO: Retrieve the studentUid from the FirebaseAuth instance or pass it through the intent
-        studentUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        studentUid = (firebaseAuth != null ? firebaseAuth : FirebaseAuth.getInstance()).getCurrentUser().getUid();
 
         // Load the current number of enrolled students
         loadEnrolledCount(courseName, departmentName);
@@ -157,7 +166,7 @@ public class CourseDetailActivity extends AppCompatActivity {
         });
     }
 
-    private void registerForCourse(String courseName, String departmentName, String studentUid) {
+    public void registerForCourse(String courseName, String departmentName, String studentUid) {
         // Reference to the course in the database
         DatabaseReference courseRef = mDatabase.child(departmentName).child(courseName);
 
