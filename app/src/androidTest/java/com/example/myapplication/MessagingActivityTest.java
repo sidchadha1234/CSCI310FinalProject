@@ -66,7 +66,7 @@ public class MessagingActivityTest {
 
 // Wait for the HomePageActivity to load
         try {
-            Thread.sleep(2000); // waits for 2 seconds
+            Thread.sleep(5000); // waits for 2 seconds
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -75,7 +75,7 @@ public class MessagingActivityTest {
         onView(withId(R.id.buttonMessages)).perform(click());
 
         try {
-            Thread.sleep(2000); // waits for 2 seconds
+            Thread.sleep(5000); // waits for 2 seconds
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -92,7 +92,7 @@ public class MessagingActivityTest {
 
 
         try {
-            Thread.sleep(2000); // waits for 2 seconds
+            Thread.sleep(5000); // waits for 2 seconds
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -105,7 +105,7 @@ public class MessagingActivityTest {
         // Click the send button
         onView(withId(R.id.fab)).perform(click());
         try {
-            Thread.sleep(2000); // waits for 2 seconds
+            Thread.sleep(5000); // waits for 2 seconds
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

@@ -51,7 +51,7 @@ public class checkRegisteredClassesAndUsers {
 
 // Wait for the HomePageActivity to load
         try {
-            Thread.sleep(2000); // waits for 2 seconds
+            Thread.sleep(5000); // waits for 2 seconds
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -60,7 +60,7 @@ public class checkRegisteredClassesAndUsers {
         onView(withId(R.id.buttonMessages)).perform(click());
 
         try {
-            Thread.sleep(2000); // waits for 2 seconds
+            Thread.sleep(5000); // waits for 2 seconds
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
