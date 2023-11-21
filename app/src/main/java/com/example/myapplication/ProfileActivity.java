@@ -98,9 +98,7 @@ public class ProfileActivity extends AppCompatActivity {
                     String email = dataSnapshot.child("email").getValue(String.class);
 
                     // Set the EditText fields with the retrieved data
-                    nameEditText.setText(name != null ? name : "");
-                    uscIdEditText.setText(uscID != null ? uscID : "");
-                    emailEditText.setText(email != null ? email : "");
+                    updateUIWithUserInfo(name, uscID, email);
                 }
 
                 @Override
@@ -142,6 +140,12 @@ public class ProfileActivity extends AppCompatActivity {
         startActivityForResult(gallery, PICK_IMAGE);
     }
 
+    public void updateUIWithUserInfo(String name, String uscID, String email) {
+        nameEditText.setText(name != null ? name : "");
+        uscIdEditText.setText(uscID != null ? uscID : "");
+        emailEditText.setText(email != null ? email : "");
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -174,6 +178,16 @@ public class ProfileActivity extends AppCompatActivity {
                     })
                     .addOnFailureListener(e -> Toast.makeText(ProfileActivity.this, "Image upload failed: " + e.getMessage(), Toast.LENGTH_SHORT).show());
         }
+    }
+
+    //function to set firebase auth
+    // For testing: methods to inject mock dependencies
+    public void setFirebaseAuth(FirebaseAuth mockAuth) {
+        this.user = (mockAuth != null) ? mockAuth.getCurrentUser() : null;
+    }
+
+    public void setFirebaseDatabase(DatabaseReference mockDatabase) {
+        this.mDatabase = mockDatabase;
     }
 
 
