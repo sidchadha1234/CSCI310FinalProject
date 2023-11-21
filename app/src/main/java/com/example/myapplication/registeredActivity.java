@@ -63,7 +63,6 @@ public class registeredActivity extends AppCompatActivity {
             adapter = new UserAdapter(this, registeredUserIds, currentUserId);
             listView.setAdapter(adapter);
 
-            // Listen for single value event at the root of your database
             rootRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {

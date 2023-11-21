@@ -44,4 +44,11 @@
         android:text="Submit Rating"
         android:layout_gravity="center" />
 
+    <TextView
+        android:id="@+id/rateStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Rated Just Now: No"
+        android:layout_gravity="center" />
+
 </LinearLayout>

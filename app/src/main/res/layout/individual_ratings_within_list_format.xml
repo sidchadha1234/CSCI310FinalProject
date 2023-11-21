@@ -4,8 +4,8 @@
     android:orientation="vertical"
     android:padding="10dp">
 
-    <!-- Information fields -->
-    <!-- Username Row -->
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -20,7 +20,6 @@
 
     </LinearLayout>
 
-    <!-- Workload Rating Row -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -35,7 +34,6 @@
 
     </LinearLayout>
 
-    <!-- Attendance Row -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -50,7 +48,6 @@
 
     </LinearLayout>
 
-    <!-- Late HW Row -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -65,7 +62,6 @@
 
     </LinearLayout>
 
-    <!-- Class Rating Row -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -80,7 +76,6 @@
 
     </LinearLayout>
 
-    <!-- Comments and Buttons Row -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -94,7 +89,6 @@
             android:layout_weight="3"
             android:text="Comments: Test #1 Following username bug fix, you know what it isssss" />
 
-        <!-- Buttons Container -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -11,7 +11,7 @@ public class User {
 
 
     public User() {
-        // Default constructor required for calls to DataSnapshot.getValue(User.class)
+        // Default constructor required
     }
 
     public User(String name, String uscID, String email, String userType) {
@@ -32,5 +32,4 @@ public class User {
         this.profileImageUrl = profileImageUrl;
     }
 
-    // ... other getters and setters ...
 }

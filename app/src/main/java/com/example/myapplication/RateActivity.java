@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -31,7 +32,11 @@ public class RateActivity extends AppCompatActivity {
     private String departmentName;
     private String courseName;
 
+    private TextView rateStatusTV;
+
     private String className;
+
+    //private boolean preRated;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +52,7 @@ public class RateActivity extends AppCompatActivity {
         allowsLateSubmissionCheckBox = findViewById(R.id.allowsLateSubmission);
         commentsEditText = findViewById(R.id.comments);
         submitRatingButton = findViewById(R.id.submitRating);
+        rateStatusTV = findViewById(R.id.rateStatus);
 
         Intent intent = getIntent();
         departmentName = intent.getStringExtra("DEPARTMENT_NAME");
@@ -55,7 +61,9 @@ public class RateActivity extends AppCompatActivity {
         submitRatingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //rateStatusTV.setText("Rated: Yes");
                 submitRating(departmentName, courseName);
+
             }
         });
     }
@@ -94,6 +102,8 @@ public class RateActivity extends AppCompatActivity {
                                     if (username == null) username = "Anonymous";
 
                                     // Create and save the rating instance with userId
+//                                    rateStatusTV.setText("Rated: Yes");
+                                    //preRated = true;
                                     CourseRatingInstance rating = new CourseRatingInstance(workloadRating, courseScore, checksAttendance, allowsLateSubmission, comments, username, departmentName, courseName, userId);
                                     saveRatingToFirebase(rating, departmentName, courseName);
                                 }
@@ -119,47 +129,7 @@ public class RateActivity extends AppCompatActivity {
         }
     }
 
-//    private void submitRating(String departmentName, String courseName) {
-//        try {
-//            int workloadRating = Integer.parseInt(workloadRatingEditText.getText().toString());
-//            int courseScore = Integer.parseInt(courseScoreEditText.getText().toString());
-//
-//            if (workloadRating < 1 || workloadRating > 10 || courseScore < 1 || courseScore > 10) {
-//                Toast.makeText(this, "Ratings must be between 1 and 10", Toast.LENGTH_SHORT).show();
-//                return;
-//            }
-//
-//            boolean checksAttendance = checksAttendanceCheckBox.isChecked();
-//            boolean allowsLateSubmission = allowsLateSubmissionCheckBox.isChecked();
-//            String comments = commentsEditText.getText().toString();
-//
-//            FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-//            if (currentUser != null) {
-//                String userId = currentUser.getUid();
-//                DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("students").child(userId);
-//                userRef.addListenerForSingleValueEvent(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                        String username = dataSnapshot.child("name").getValue(String.class);
-//                        if (username == null) username = "Anonymous"; // Fallback to "Anonymous" if name not found
-//
-//                        // Create and save the rating instance
-//                        CourseRatingInstance rating = new CourseRatingInstance(workloadRating, courseScore, checksAttendance, allowsLateSubmission, comments, username, departmentName, courseName, userID);
-//                        saveRatingToFirebase(rating, departmentName, courseName);
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(@NonNull DatabaseError databaseError) {
-//                        Toast.makeText(RateActivity.this, "Failed to fetch user data: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//            } else {
-//                Toast.makeText(this, "User not logged in.", Toast.LENGTH_SHORT).show();
-//            }
-//        }catch (NumberFormatException e){
-//            Toast.makeText(this, "Please enter valid numbers for ratings", Toast.LENGTH_SHORT).show();
-//        }
-//    }
+
 
     private void saveRatingToFirebase(CourseRatingInstance rating, String departmentName, String courseName) {
         DatabaseReference ratingsRef = mDatabase.child(departmentName).child(courseName).child("ratings");
@@ -170,21 +140,11 @@ public class RateActivity extends AppCompatActivity {
 
         // save entire object with the key to Firebase
         newRatingRef.setValue(rating)
-                .addOnSuccessListener(aVoid -> Toast.makeText(RateActivity.this, "Rating submitted successfully!", Toast.LENGTH_SHORT).show())
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(RateActivity.this, "Rating submitted successfully!", Toast.LENGTH_SHORT).show();
+                    rateStatusTV.setText("Rated Just Now: Yes"); // UI update moved here
+                    // Other success handling logic
+                })
                 .addOnFailureListener(e -> Toast.makeText(RateActivity.this, "Failed to submit rating: " + e.getMessage(), Toast.LENGTH_SHORT).show());
     }
 }
-
-
-//        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-//
-//        String courseId = "the_course_id"; // Replace with actual course ID
-//        databaseReference.child("courses").child(courseId).child("ratings").push().setValue(rating)
-//                .addOnSuccessListener(aVoid -> {
-//                    // Handle success, e.g., show a toast message
-//                    Toast.makeText(RateActivity.this, "Rating submitted successfully!", Toast.LENGTH_SHORT).show();
-//                })
-//                .addOnFailureListener(e -> {
-//                    // Handle failure, e.g., show an error message
-//                    Toast.makeText(RateActivity.this, "Failed to submit rating: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-//                });
