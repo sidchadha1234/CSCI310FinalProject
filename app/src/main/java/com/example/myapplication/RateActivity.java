@@ -21,13 +21,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class RateActivity extends AppCompatActivity {
-    private EditText workloadRatingEditText;
-    private EditText courseScoreEditText;
-    private CheckBox checksAttendanceCheckBox;
-    private CheckBox allowsLateSubmissionCheckBox;
-    private EditText commentsEditText;
-    private Button submitRatingButton;
-    private DatabaseReference mDatabase;
+    EditText workloadRatingEditText;
+    EditText courseScoreEditText;
+    CheckBox checksAttendanceCheckBox;
+    CheckBox allowsLateSubmissionCheckBox;
+    EditText commentsEditText;
+    Button submitRatingButton;
+    DatabaseReference mDatabase;
 
     private String departmentName;
     private String courseName;
@@ -69,7 +69,7 @@ public class RateActivity extends AppCompatActivity {
     }
 
 
-    private void submitRating(String departmentName, String courseName) {
+    void submitRating(String departmentName, String courseName) {
         try {
             int workloadRating = Integer.parseInt(workloadRatingEditText.getText().toString());
             int courseScore = Integer.parseInt(courseScoreEditText.getText().toString());
@@ -146,5 +146,15 @@ public class RateActivity extends AppCompatActivity {
                     // Other success handling logic
                 })
                 .addOnFailureListener(e -> Toast.makeText(RateActivity.this, "Failed to submit rating: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+    }
+
+    public boolean validateInput() {
+        try {
+            int workloadRating = Integer.parseInt(workloadRatingEditText.getText().toString());
+            int courseScore = Integer.parseInt(courseScoreEditText.getText().toString());
+            return workloadRating >= 1 && workloadRating <= 10 && courseScore >= 1 && courseScore <= 10;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 }
