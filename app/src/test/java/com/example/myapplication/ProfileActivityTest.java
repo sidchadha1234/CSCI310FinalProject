@@ -5,30 +5,39 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
 
 import android.content.Context;
 import android.widget.EditText;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 
 public class ProfileActivityTest {
     private ProfileActivity profileActivity;
+    @Mock
+    private FirebaseDatabase mockedFirebaseDatabase;
+    @Mock
+    private DatabaseReference mockedstudentsReference;
 
     @Before
     public void setUp() {
-        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        MockitoAnnotations.initMocks(this);
+        when(mockedFirebaseDatabase.getReference("students")).thenReturn(mockedstudentsReference);
+        when(mockedstudentsReference.child(anyString())).thenReturn(mockedstudentsReference); // Return the mock for any child path
+        when(mockedstudentsReference.push()).thenReturn(mockedstudentsReference); // Return the mock for push()
 
-        profileActivity = new ProfileActivity();
-        // Initialize the EditTexts or mock them
-        profileActivity.nameEditText = new EditText(context); // Mock or actual EditText
-        profileActivity.uscIdEditText = new EditText(context);
-        profileActivity.emailEditText = new EditText(context);
     }
-
     @Test
+    public void saveUserInfo_savesCorrectDataToFirebase() {}
     public void testUpdateUIWithUserInfo() {
         profileActivity.updateUIWithUserInfo("TestName", "123456", "test@email.com");
 
