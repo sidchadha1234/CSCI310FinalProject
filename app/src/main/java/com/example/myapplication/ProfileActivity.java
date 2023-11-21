@@ -38,6 +38,8 @@ public class ProfileActivity extends AppCompatActivity {
     private static final int PICK_IMAGE = 100;
     private Uri imageUri;
 
+    private Button buttonReturnHome;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +50,7 @@ public class ProfileActivity extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         // Initialize UI components
+        buttonReturnHome = findViewById(R.id.buttonReturnHome);
         nameEditText = findViewById(R.id.editTextName);
         uscIdEditText = findViewById(R.id.editTextUSCID);
         emailEditText = findViewById(R.id.editTextEmail);
@@ -70,6 +73,13 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 saveUserInfo();
+            }
+        });
+
+        buttonReturnHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish(); // This will close the current activity and return to HomeActivity
             }
         });
     }

@@ -23,6 +23,15 @@
         android:layout_marginTop="8dp"
         android:text="Change Image" />
 
+    <Button
+        android:id="@+id/buttonReturnHome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Return to Home"
+        android:layout_below="@id/buttonSave"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp" />
+
     <!-- Name Label below the Change Image Button -->
     <TextView
         android:id="@+id/textViewNameLabel"
