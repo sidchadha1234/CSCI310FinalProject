@@ -61,6 +61,10 @@
             android:name=".MessagingActivity"
             android:exported="true" />
 
+        <activity
+            android:name=".EditRating"
+            android:exported="true" />
+
     </application>
 
 </manifest>

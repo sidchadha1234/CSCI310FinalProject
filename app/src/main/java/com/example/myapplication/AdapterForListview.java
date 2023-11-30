@@ -1,6 +1,10 @@
 package com.example.myapplication;
 
+import static androidx.core.content.ContextCompat.startActivity;
+
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +45,7 @@ public class AdapterForListview extends ArrayAdapter<CourseRatingInstance> {
         }
 
         CourseRatingInstance p = getItem(position);
+        String currUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         if (p != null) {
             TextView tvUsername = v.findViewById(R.id.usernameTextView);
@@ -49,9 +54,29 @@ public class AdapterForListview extends ArrayAdapter<CourseRatingInstance> {
             TextView tvComments = v.findViewById(R.id.tvComments);
             TextView tvAttendanceCheck = v.findViewById(R.id.tvAttendanceCheck);
             TextView tvLateHW = v.findViewById(R.id.tvLateHW);
-
             Button btnUpvote = v.findViewById(R.id.btnUpvote);
             Button btnDownvote = v.findViewById(R.id.btnDownvote);
+            Button btnEdit = v.findViewById(R.id.btnEdit); // Make sure you have a button with this ID in your layout
+
+            Log.d("DebugInfo", "currUserID: '" + currUserID + "'");
+            Log.d("DebugInfo", "p.getUserId(): '" + p.getUserId() + "'");
+            if(currUserID.equals(p.getUserId())) {
+                btnEdit.setVisibility(View.VISIBLE);
+                btnEdit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(mContext, EditRating.class);
+                        intent.putExtra("DEPARTMENT_NAME", p.getDepartmentName()); // Pass department name
+                        intent.putExtra("COURSE_NAME", p.getCourseName()); // Pass course name
+                        intent.putExtra("RATING_KEY", p.getFirebaseKey()); // Pass the key of the rating to be edited
+                        mContext.startActivity(intent);
+                    }
+                });
+            } else {
+                btnEdit.setVisibility(View.GONE); // Or View.INVISIBLE if you want to keep its space
+            }
+
+            //CourseRatingInstance p = getItem(position); update p
 
             tvUsername.setText("Username: " + p.getUsername());
             tvWorkload.setText("Workload Rating: " + p.getWorkloadRating());
