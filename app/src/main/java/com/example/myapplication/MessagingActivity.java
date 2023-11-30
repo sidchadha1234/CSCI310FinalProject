@@ -1,19 +1,26 @@
 package com.example.myapplication;
 
+import static java.security.AccessController.getContext;
+
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AppCompatActivity;
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.firebase.ui.database.FirebaseListOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class MessagingActivity extends AppCompatActivity {
     private static boolean isInTestMode = false;
@@ -23,6 +30,7 @@ public class MessagingActivity extends AppCompatActivity {
     private DatabaseReference chatsRef;
 
     // Constructor used for testing
+    private DatabaseReference mDatabase;
 
 
     // Default constructor should be used only when the class is initialized in a real environment
@@ -30,6 +38,8 @@ public class MessagingActivity extends AppCompatActivity {
         if (!isInEditMode()) {
             FirebaseDatabase database = FirebaseDatabase.getInstance();
             this.chatsRef = database.getReference("chats");
+            this.mDatabase = database.getReference(); // Initialize mDatabase here
+
         }
     }
     // Overloaded constructor for testing purposes
@@ -75,10 +85,28 @@ public class MessagingActivity extends AppCompatActivity {
     }
 
     public void sendMessage(String messageText, String userId, String chatId) {
-        // Sends a message to the Firebase database
-        Message message = new Message(messageText, userId);
-        chatsRef.child(chatId).push().setValue(message);
+        // Check if the user is blocked
+        mDatabase.child("blocks").child(otherUserId).child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    // Context should be MessagingActivity.this instead of getContext()
+                    Toast.makeText(MessagingActivity.this, "Cannot send message. User is blocked.", Toast.LENGTH_SHORT).show();
+                } else {
+                    // Send message if not blocked
+                    Message message = new Message(messageText, userId);
+                    chatsRef.child(chatId).push().setValue(message);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Handle possible errors
+            }
+        });
     }
+
+
 
     public void displayChatMessages(String chatId) {
         if (adapter == null) {

@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -56,7 +57,15 @@ public class UserAdapter extends ArrayAdapter<String> {
         if (previousListener != null) {
             mDatabase.child("students").child((String)finalConvertView.getTag(R.id.tag_user_id)).removeEventListener(previousListener);
         }
+        Button buttonBlock = finalConvertView.findViewById(R.id.buttonBlock);
 
+        // Handle block button click
+        buttonBlock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                blockUser(userId);
+            }
+        });
         // Set the tag for the userId to the finalConvertView
         finalConvertView.setTag(R.id.tag_user_id, userId);
 
@@ -104,6 +113,11 @@ public class UserAdapter extends ArrayAdapter<String> {
         return finalConvertView;
     }
 
+    private void blockUser(String userIdToBlock) {
+        // Logic to block the user
+        String myUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        mDatabase.child("blocks").child(myUserId).child(userIdToBlock).setValue(true);
+    }
 
 
 
