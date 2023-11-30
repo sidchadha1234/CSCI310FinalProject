@@ -73,6 +73,8 @@ public class UserAdapter extends ArrayAdapter<String> {
         if (userId.startsWith("Course:")) {
             textViewUser.setText(userId.substring(7)); // Remove "Course:" prefix when displaying
             buttonMessage.setVisibility(View.GONE);
+            buttonBlock.setVisibility(View.GONE);
+
         } else if (userId.equals(currentUserId)) {
             textViewUser.setText("You");
             buttonMessage.setVisibility(View.GONE);
