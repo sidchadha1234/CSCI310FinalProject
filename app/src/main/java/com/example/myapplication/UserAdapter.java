@@ -13,7 +13,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -70,11 +69,38 @@ public class UserAdapter extends ArrayAdapter<String> {
         }
         Button buttonBlock = finalConvertView.findViewById(R.id.buttonBlock);
 
-        // Handle block button click
-        buttonBlock.setOnClickListener(new View.OnClickListener() {
+        // Initially set the text to "Block"
+        buttonBlock.setText("Block");
+
+        // Check if the user is already blocked
+        mDatabase.child("blocks").child(currentUserId).child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onClick(View v) {
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    // If user is blocked, set button to show "Unblock"
+                    buttonBlock.setText("Unblock");
+                } else {
+                    // If user is not blocked, set button to show "Block"
+                    buttonBlock.setText("Block");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w("UserAdapter", "checkBlockStatus:onCancelled", databaseError.toException());
+            }
+        });
+
+        // Handle block/unblock button click
+        buttonBlock.setOnClickListener(v -> {
+            if (buttonBlock.getText().toString().equals("Block")) {
+                // Block the user
                 blockUser(userId);
+                buttonBlock.setText("Unblock");
+            } else {
+                // Unblock the user
+                unblockUser(userId);
+                buttonBlock.setText("Block");
             }
         });
         // Set the tag for the userId to the finalConvertView
@@ -128,10 +154,13 @@ public class UserAdapter extends ArrayAdapter<String> {
 
     private void blockUser(String userIdToBlock) {
         // Logic to block the user
-        String myUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        mDatabase.child("blocks").child(myUserId).child(userIdToBlock).setValue(true);
+        mDatabase.child("blocks").child(currentUserId).child(userIdToBlock).setValue(true);
     }
 
+    private void unblockUser(String userIdToUnblock) {
+        // Logic to unblock the user
+        mDatabase.child("blocks").child(currentUserId).child(userIdToUnblock).removeValue();
+    }
 
 
 }
