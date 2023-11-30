@@ -4,6 +4,7 @@ import static java.security.AccessController.getContext;
 
 import android.os.Bundle;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -85,26 +86,35 @@ public class MessagingActivity extends AppCompatActivity {
     }
 
     public void sendMessage(String messageText, String userId, String chatId) {
-        // Check if the user is blocked
-        mDatabase.child("blocks").child(otherUserId).child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+        DatabaseReference blockRef = mDatabase.child("blocks");
+
+        // Check if the current user is blocked by the other user or has blocked the other user.
+        ValueEventListener blockCheckListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    // Context should be MessagingActivity.this instead of getContext()
-                    Toast.makeText(MessagingActivity.this, "Cannot send message. User is blocked.", Toast.LENGTH_SHORT).show();
-                } else {
-                    // Send message if not blocked
+                // This will be true if either user has blocked the other.
+                boolean isBlocked = dataSnapshot.child(userId).hasChild(otherUserId) || dataSnapshot.child(otherUserId).hasChild(userId);
+
+                if (!isBlocked) {
+                    // Send message if not blocked.
                     Message message = new Message(messageText, userId);
                     chatsRef.child(chatId).push().setValue(message);
+                } else {
+                    // Show toast message if blocked.
+                    Toast.makeText(MessagingActivity.this, "Cannot send message. Blocked activity.", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                // Handle possible errors
+                Log.w("MessagingActivity", "blockCheck:onCancelled", databaseError.toException());
             }
-        });
+        };
+
+        // Check the block status in real-time before sending the message.
+        blockRef.addListenerForSingleValueEvent(blockCheckListener);
     }
+
 
 
 
