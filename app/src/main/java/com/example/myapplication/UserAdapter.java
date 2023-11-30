@@ -48,8 +48,19 @@ public class UserAdapter extends ArrayAdapter<String> {
 
         TextView textViewUser = finalConvertView.findViewById(R.id.textViewUser);
         Button buttonMessage = finalConvertView.findViewById(R.id.buttonMessage);
+        Button buttonProfile = finalConvertView.findViewById(R.id.buttonProfile);
 
         String userId = getItem(position);
+        buttonProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, ViewProfileActivity.class);
+                intent.putExtra("USER_ID", userId); // Pass the user ID
+                context.startActivity(intent);
+            }
+        });
+
+
 
         // Cancel any previous listener before setting a new one
         final ValueEventListener previousListener = (ValueEventListener) finalConvertView.getTag(R.id.tag_database_listener);
