@@ -42,7 +42,8 @@ dependencies {
     implementation("com.google.firebase:firebase-storage:latest_version")
     implementation("com.google.firebase:firebase-auth:21.0.1")
     implementation("com.google.firebase:firebase-storage:20.3.0")
-    implementation("com.firebaseui:firebase-ui-database:8.0.0") // Use the appropriate version
+    implementation("com.firebaseui:firebase-ui-database:8.0.0")
+    implementation("androidx.test.espresso:espresso-contrib:3.5.1") // Use the appropriate version
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     testImplementation("androidx.test:core:1.5.0")
