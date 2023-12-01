@@ -51,6 +51,8 @@ public class UserAdapter extends ArrayAdapter<String> {
         Button buttonProfile = finalConvertView.findViewById(R.id.buttonProfile);
 
         String userId = getItem(position);
+
+
         buttonProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,6 +73,12 @@ public class UserAdapter extends ArrayAdapter<String> {
 
         // Initially set the text to "Block"
         buttonBlock.setText("Block");
+        if (userId.startsWith("Course:")) {
+            textViewUser.setText(userId.substring(7)); // Extract course name
+            buttonMessage.setVisibility(View.GONE);
+            buttonBlock.setVisibility(View.GONE);
+            buttonProfile.setVisibility(View.GONE); // Hide the profile button
+        }
 
         // Check if the user is already blocked
         mDatabase.child("blocks").child(currentUserId).child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
