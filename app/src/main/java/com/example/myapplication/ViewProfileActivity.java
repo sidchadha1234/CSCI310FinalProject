@@ -2,6 +2,8 @@ package com.example.myapplication;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.ImageView;
 import androidx.annotation.NonNull;
@@ -20,6 +22,7 @@ public class ViewProfileActivity extends AppCompatActivity {
     private DatabaseReference mDatabase;
     private ImageView imageViewProfile;
     private String userId;
+    private Button buttonReturnHome;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +37,7 @@ public class ViewProfileActivity extends AppCompatActivity {
         uscIdTextView = findViewById(R.id.textViewUSCID);
         emailTextView = findViewById(R.id.textViewEmail);
         imageViewProfile = findViewById(R.id.imageViewProfile);
+        buttonReturnHome = findViewById(R.id.buttonReturnHome);
 
         // Get the user ID from the intent
         userId = getIntent().getStringExtra("USER_ID");
@@ -41,6 +45,12 @@ public class ViewProfileActivity extends AppCompatActivity {
         // Load user information and profile image
         loadUserInfo();
         loadProfileImage();
+        buttonReturnHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish(); // This will close the current activity and return to HomeActivity
+            }
+        });
     }
 
     private void loadUserInfo() {
